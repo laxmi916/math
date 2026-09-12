@@ -592,6 +592,7 @@ const TRICKS=[
 {id:"bridge10",icon:"🧩",name:"Bridge to 10",level:"Foundation",desc:"Break the second number apart to make 10 first.",example:"8 + 7 = 8 + 2 + 5 = 15",tip:"Take what 8 needs to make 10, then add the rest."},
 {id:"bridge10sub",icon:"🧩",name:"Bridge to 10 Subtraction",level:"Foundation",desc:"Break the number apart to subtract through 10.",example:"15 − 7 = 15 − 5 − 2 = 8",tip:"Subtract enough to reach 10, then subtract the rest."},
 {id:"counton",icon:"👉",name:"Count On",level:"Foundation",desc:"Start with the bigger number and count forward.",example:"9 + 3 → 10, 11, 12",tip:"Never restart from 1."},
+{id:"countup",icon:"⬆️",name:"Count-Up Subtraction",level:"Foundation",desc:"Count upward from the smaller number.",example:"72 − 68: 68→70 (+2), 70→72 (+2), answer 4",tip:"Useful when numbers are close."},
 {id:"doubles",icon:"👯",name:"Doubles",level:"Foundation",desc:"Remember pairs with the same number.",example:"7 + 7 = 14",tip:"Use doubles as anchors."},
 {id:"doublesSub",icon:"↩️",name:"Doubles Subtraction",level:"Foundation",desc:"Use a double fact to find the missing part.",example:"14 − 7 = 7",tip:"Think of the matching double: 7 + 7 = 14."},
 {id:"plus9",icon:"➕9️⃣",name:"+9 Trick",level:"Foundation",desc:"Add 10, then subtract 1.",example:"36 + 9 = 46 − 1 = 45",tip:"+9 = +10 − 1."},
@@ -602,7 +603,10 @@ const TRICKS=[
 {id:"placeSub",icon:"🏠",name:"Tens − Ones",level:"Foundation",desc:"Split numbers into tens and ones for subtraction.",example:"67 − 24 = 60 − 20 + 7 − 4 = 43",tip:"Break numbers into tens and ones."},
 {id:"comp",icon:"⚖️",name:"Compensation",level:"Foundation",desc:"Round one number, calculate, then correct.",example:"49 + 27 = 50 + 27 − 1 = 76",tip:"Change the number to a friendly one."},
 {id:"compSub",icon:"⚖️",name:"Compensation Subtraction",level:"Foundation",desc:"Round the number, subtract, then correct.",example:"52 − 19 = 52 − 20 + 1 = 33",tip:"Subtract a friendly number, then correct."},
-{id:"countup",icon:"⬆️",name:"Count-Up Subtraction",level:"Foundation",desc:"Count upward from the smaller number.",example:"72 − 68: 68→70 (+2), 70→72 (+2), answer 4",tip:"Useful when numbers are close."},
+
+{id:"addparts",icon:"🔁",name:"Add in Parts",level:"Foundation",desc:"Break the second number into tens and ones.",example:"24 + 13 = 24 + 10 + 3 = 37",tip:"Add the tens first, then the ones."},
+
+{id:"subparts",icon:"↩️",name:"Subtract in Parts",level:"Foundation",desc:"Break the number into tens and ones.",example:"47 − 13 = 47 − 10 − 3 = 34",tip:"Subtract the tens first, then the ones."},
 
 {id:"plus19",icon:"1️⃣9️⃣",name:"+19 Trick",level:"Fast Arithmetic",desc:"Add 20, then subtract 1.",example:"46 + 19 = 66 − 1 = 65",tip:"+19 = +20 − 1."},
 {id:"plus29",icon:"2️⃣9️⃣",name:"+29 Trick",level:"Fast Arithmetic",desc:"Add 30, then subtract 1.",example:"58 + 29 = 88 − 1 = 87",tip:"+29 = +30 − 1."},
@@ -773,6 +777,8 @@ case"bridge10sub": { const a=rand(11,19); const need=a-10; const b=rand(need+1,9
 
 case"counton": a=rand(10,80);b=rand(2,9);ans=a+b;text=`${a} + ${b} = ?`;break;
 
+case"countup": a=rand(40,100);b=rand(1,15);ans=b;text=`${a} − ${a-b} = ?`;break;
+
 case"doubles": a=rand(2,40);ans=a*2;text=`${a} + ${a} = ?`;break;
 
 case"doublesSub": a=rand(2,40);ans=a;text=`${a*2} − ${a} = ?`;break;
@@ -793,7 +799,9 @@ case"comp": a=rand(20,99);b=rand(10,60);ans=a+b;text=`${a} + ${b} = ?`;break;
 
 case"compSub": { const a=rand(30,100); const b=rand(11,30); const rounded=Math.round(b/10)*10; const correction=rounded-b; const ans=a-b; return {text:`${a} − ${b} = ?`,ans:ans,explanation:`💡 ${a} − ${b} = ${a} − ${rounded} + ${correction} = ${ans}`}; }
 
-case"countup": a=rand(40,100);b=rand(1,15);ans=b;text=`${a} − ${a-b} = ?`;break;
+case"addparts": { const a=rand(20,80); const b=rand(11,39); const ans=a+b; return {text:`${a} + ${b} = ?`,ans:ans,explanation:`💡 ${a} + ${b} = ${a} + ${Math.floor(b/10)*10} + ${b%10} = ${ans}`}; }
+
+case"subparts": { const a=rand(40,90); const b=rand(11,a-10); const ans=a-b; return {text:`${a} − ${b} = ?`,ans:ans,explanation:`💡 ${a} − ${b} = ${a} − ${Math.floor(b/10)*10} − ${b%10} = ${ans}`}; }
 
   case"plus19": a=rand(20,90);ans=a+19;text=`${a} + 19 = ?`;break;
   case"plus29": a=rand(20,90);ans=a+29;text=`${a} + 29 = ?`;break;
