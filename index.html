@@ -588,6 +588,7 @@ details.item summary{
 
 const TRICKS=[
 {id:"make10",icon:"🔟",name:"Make 10",level:"Foundation",desc:"Break a number apart to make a friendly 10.",example:"8 + 7 = 8 + 2 + 5 = 15",tip:"Find the number needed to reach 10."},
+{id:"bridge10",icon:"🧩",name:"Bridge to 10",level:"Foundation",desc:"Break the second number apart to make 10 first.",example:"8 + 7 = 8 + 2 + 5 = 15",tip:"Take what 8 needs to make 10, then add the rest."},
 {id:"counton",icon:"👉",name:"Count On",level:"Foundation",desc:"Start with the bigger number and count forward.",example:"9 + 3 → 10, 11, 12",tip:"Never restart from 1."},
 {id:"doubles",icon:"👯",name:"Doubles",level:"Foundation",desc:"Remember pairs with the same number.",example:"7 + 7 = 14",tip:"Use doubles as anchors."},
 {id:"plus9",icon:"➕9️⃣",name:"+9 Trick",level:"Foundation",desc:"Add 10, then subtract 1.",example:"36 + 9 = 46 − 1 = 45",tip:"+9 = +10 − 1."},
@@ -757,7 +758,8 @@ function renderInfo(){
 function makeQuestion(t){
  let a,b,n,ans,text;
  switch(t.id){
-  case"make10": a=rand(2,9);b=rand(1,10-a);ans=a+b;text=`${a} + ${b} = ?`;break;
+  case"make10": a=rand(2,9);b=10-a;ans=b;text=`${a} + ? = 10`;break;
+  case "bridge10": { const a = rand(6, 9); const b = rand(4, 9); const need = 10 - a; const remaining = b - need; const ans = a + b; return { text: `${a} + ${b} = ?`, ans: ans, explanation: `💡 ${a} + ${b} = ${a} + ${need} + ${remaining} = 10 + ${remaining} = ${ans}` }; }
   case"counton": a=rand(10,80);b=rand(2,9);ans=a+b;text=`${a} + ${b} = ?`;break;
   case"doubles": a=rand(2,40);ans=a*2;text=`${a} + ${a} = ?`;break;
   case"plus9": a=rand(10,90);ans=a+9;text=`${a} + 9 = ?`;break;
