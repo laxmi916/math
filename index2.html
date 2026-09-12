@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#6c5ce7">
+<title>🧠 Mental Math Adventure</title>
+<style>
+:root{
+  --p:#6c5ce7;
+  --p2:#8e7cf6;
+  --bg:#f7f7fc;
+  --ink:#20243a;
+  --muted:#73788d;
+  --line:#e7e7f0;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+}
+
+.app{
+  width:100%;
+  max-width:520px;
+  margin:auto;
+  min-height:100vh;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:30;
+  color:#fff;
+  background:linear-gradient(145deg,var(--p),var(--p2));
+  padding:12px 13px 13px;
+  box-shadow:0 3px 15px #0002;
+}
+
+.toprow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.menu{
+  width:45px;
+  height:45px;
+  border:0;
+  border-radius:14px;
+  background:#ffffff25;
+  color:#fff;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.brand{
+  flex:1;
+}
+
+.brand h1{
+  font-size:19px;
+  margin:0;
+  font-weight:950;
+}
+
+.brand p{
+  font-size:11px;
+  margin:2px 0 0;
+  opacity:.9;
+}
+
+.stats{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.stat{
+  flex:1;
+  text-align:center;
+  background:#ffffff20;
+  border:1px solid #ffffff22;
+  border-radius:13px;
+  padding:5px;
+  font-size:10px;
+}
+
+.stat b{
+  display:block;
+  font-size:16px;
+}
+
+.drawer{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:min(320px,88vw);
+  z-index:60;
+  background:#fff;
+  transform:translateX(-105%);
+  transition:.25s;
+  overflow:auto;
+  box-shadow:8px 0 30px #0003;
+}
+
+.drawer.open{
+  transform:translateX(0);
+}
+
+.scrim{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  background:#0008;
+  display:none;
+}
+
+.scrim.open{
+  display:block;
+}
+
+.dhead{
+  background:linear-gradient(145deg,var(--p),var(--p2));
+  color:#fff;
+  padding:24px 18px;
+}
+
+.dhead h2{
+  margin:0;
+  font-size:23px;
+}
+
+.dhead p{
+  margin:5px 0 0;
+  font-size:13px;
+}
+
+.level-label{
+  padding:15px 18px 7px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.level{
+  width:100%;
+  border:0;
+  background:#fff;
+  text-align:left;
+  padding:14px 18px;
+  font-weight:850;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:15px;
+}
+
+.level.active{
+  background:#f0eeff;
+  color:#5545d4;
+  border-right:4px solid var(--p);
+}
+
+.li{
+  font-size:22px;
+  width:30px;
+  text-align:center;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  padding:9px 11px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:100px;
+  z-index:20;
+}
+
+.tab{
+  flex:1;
+  border:0;
+  border-radius:12px;
+  padding:10px 4px;
+  background:#f0f0f6;
+  color:#666b7d;
+  font-size:12px;
+  font-weight:900;
+}
+
+.tab.active{
+  background:var(--p);
+  color:#fff;
+}
+
+main{
+  padding:11px;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:11px;
+  box-shadow:0 5px 18px #00000009;
+}
+
+.levelchip{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#f0eeff;
+  color:#5545d4;
+  padding:9px 11px;
+  border-radius:14px;
+  margin-bottom:11px;
+  font-size:12px;
+  font-weight:900;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+
+select{
+  width:100%;
+  appearance:none;
+  border:2px solid #e0e1ea;
+  border-radius:15px;
+  padding:12px 40px 12px 12px;
+  font-weight:850;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5' fill='none' stroke='%236c5ce7' stroke-width='2.5'/%3E%3C/svg%3E") no-repeat right 12px center;
+}
+
+.trickinfo{
+  padding-top:12px;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  background:#fff1bf;
+  color:#846000;
+  font-size:10px;
+  font-weight:900;
+}
+
+.tname{
+  font-size:21px;
+  font-weight:950;
+  margin:4px 0;
+}
+
+.example{
+  margin-top:8px;
+  padding:11px;
+  border-radius:14px;
+  background:#f3f1ff;
+  font-weight:900;
+  font-size:15px;
+}
+
+.tip{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:7px;
+}
+
+.roundhead{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+
+.progress{
+  height:8px;
+  background:#ececf3;
+  border-radius:20px;
+  overflow:hidden;
+  margin:7px 0;
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--p);
+  transition:.25s;
+}
+
+.question{
+  min-height:72px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  font-size:30px;
+  font-weight:950;
+  margin:6px 0;
+}
+
+.answers{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.answer{
+  min-height:58px;
+  border:2px solid #e0e1ea;
+  background:#fff;
+  border-radius:15px;
+  font-size:19px;
+  font-weight:900;
+}
+
+.answer:disabled{cursor:default;opacity:1}
+
+.answer.correct{
+  background:#def7e8;
+  border-color:#28a65c;
+}
+
+.answer.wrong{
+  background:#ffe1e1;
+  border-color:#e05252;
+}
+
+.feedback{
+  min-height:20px;
+  line-height:1.45;
+  text-align:center;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:850;
+}
+
+.result{
+  text-align:center;
+  background:linear-gradient(145deg,#fff,#f3f1ff);
+}
+
+.result .big{
+  font-size:45px;
+}
+
+.result h2{
+  margin:2px 0;
+  font-size:25px;
+}
+
+.result p{
+  color:var(--muted);
+}
+
+.primary{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:13px;
+  background:var(--p);
+  color:#fff;
+  font-weight:900;
+}
+
+details.group{
+  border:1px solid var(--line);
+  border-radius:15px;
+  margin:8px 0;
+  overflow:hidden;
+}
+
+details.group>summary{
+  padding:13px;
+  font-weight:900;
+  background:#fafaff;
+}
+
+details.item{
+  border-top:1px solid var(--line);
+}
+
+details.item summary{
+  padding:12px;
+  font-weight:800;
+}
+
+.inside{
+  padding:0 13px 13px;
+  font-size:13px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:11px 2px;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+
+.row b{
+  background:#f0eeff;
+  color:#5545d4;
+  padding:5px 8px;
+  border-radius:20px;
+}
+
+/* =========================
+   DESKTOP: SIMPLE SIDEBAR
+   ========================= */
+@media (min-width:901px){
+
+  body{
+    padding:0;
+    overflow-x:hidden;
+  }
+
+  .app{
+    width:calc(100% - 280px);
+    max-width:none;
+    margin-left:280px;
+    margin-right:0;
+  }
+
+  /* Sidebar is always visible on desktop. */
+  .drawer{
+    left:0;
+    top:0;
+    bottom:0;
+    width:280px;
+    height:100vh;
+    transform:none;
+    transition:none;
+    z-index:100;
+    box-shadow:3px 0 18px #0002;
+  }
+
+  .scrim{
+    display:none !important;
+  }
+
+  /* Full-width header across the desktop content area. */
+  header{
+    position:fixed;
+    top:0;
+    left:280px;
+    right:0;
+    width:auto;
+    max-width:none;
+    z-index:90;
+  }
+
+  /* No hamburger on desktop. */
+  .menu{
+    display:none;
+  }
+
+  main{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    padding:105px 24px 24px;
+  }
+
+  .tabs{
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+}
+
+/* =========================
+   MOBILE: ORIGINAL BEHAVIOR
+   ========================= */
+@media (max-width:900px){
+
+  .app{
+    width:100%;
+    max-width:520px;
+    margin:auto;
+  }
+
+  header{
+    position:sticky;
+    top:0;
+    width:auto;
+    max-width:none;
+  }
+
+  .menu{
+    display:block;
+  }
+
+  .drawer{
+    width:min(320px,88vw);
+    transform:translateX(-105%);
+  }
+
+  .drawer.open{
+    transform:translateX(0);
+  }
+
+  .scrim{
+    display:none;
+  }
+
+  .scrim.open{
+    display:block;
+  }
+
+  main{
+    padding:11px;
+  }
+
+  .tabs{
+    top:100px;
+  }
+}
+
+@media(max-width:390px){
+  .question{font-size:27px}
+  .answer{font-size:17px}
+}
+</style>
+
+</head>
+<body>
+<div class="app">
+<header>
+<div class="toprow"><button class="menu" id="menu">☰</button><div class="brand"><h1>🧠 Mental Math Adventure</h1><p>Play • Learn • Master</p></div></div>
+<div class="stats"><div class="stat">🔥<b id="streak">0</b>Streak</div><div class="stat">⭐<b id="stars">0</b>Stars</div><div class="stat">🏆<b id="best">0</b>Best</div></div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer"><div class="dhead"><h2>📚 Choose Level</h2><p>Pick your math adventure</p></div><div class="level-label">Levels</div><div id="levels"></div></aside>
+
+<div class="tabs"><button class="tab active" data-tab="practice">🎮 Play</button><button class="tab" data-tab="book">📖 Tricks</button><button class="tab" data-tab="progress">🏆 Progress</button></div>
+
+<main>
+<section id="practice" class="panel active">
+<div class="card">
+<div class="levelchip"><span id="currentLevel"></span></div>
+<label for="trick">🎯 Choose a trick</label>
+<select id="trick"></select>
+<div id="info"></div>
+</div>
+<div class="card">
+<div class="roundhead"><span>Question <b id="qn">1</b> / 10</span><span>Score <b id="live">0</b></span></div>
+<div class="progress" aria-label="Round progress"><i id="bar"></i></div>
+<div id="question" class="question">Loading…</div>
+<div id="answers" class="answers"></div>
+<div id="feedback" class="feedback"></div>
+</div>
+<div id="result" class="card result" style="display:none"><div class="big">🎉</div><h2>Awesome!</h2><p id="resultText"></p><button class="primary" id="again">🔄 Play Again</button></div>
+</section>
+
+<section id="book" class="panel"><div class="card"><h2>📖 Trick Book</h2><p style="color:var(--muted);font-size:12px">Tap a trick to learn the shortcut.</p><div id="book"></div></div></section>
+<section id="progress" class="panel"><div class="card"><h2>🏆 My Progress</h2><div id="prog"></div></div></section>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const TRICKS=[
+{id:"make10",icon:"🔟",name:"Make 10",level:"Foundation",desc:"Find the number that joins another number to make 10.",example:"8 + ? = 10",tip:"Think: What number does 8 need to make 10?"},
+{id:"make10sub",icon:"🔟",name:"Make 10 Subtraction",level:"Foundation",desc:"Use 10 to find the missing part.",example:"10 − 8 = 2",tip:"Think: 8 and what number make 10?"},
+{id:"bridge10",icon:"🧩",name:"Bridge to 10",level:"Foundation",desc:"Break the second number apart to make 10 first.",example:"8 + 7 = 8 + 2 + 5 = 15",tip:"Take what 8 needs to make 10, then add the rest."},
+{id:"bridge10sub",icon:"🧩",name:"Bridge to 10 Subtraction",level:"Foundation",desc:"Break the number apart to subtract through 10.",example:"15 − 7 = 15 − 5 − 2 = 8",tip:"Subtract enough to reach 10, then subtract the rest."},
+{id:"counton",icon:"👉",name:"Count On",level:"Foundation",desc:"Start with the bigger number and count forward.",example:"9 + 3 → 10, 11, 12",tip:"Never restart from 1."},
+{id:"countup",icon:"⬆️",name:"Count-Up Subtraction",level:"Foundation",desc:"Count upward from the smaller number.",example:"72 − 68: 68→70 (+2), 70→72 (+2), answer 4",tip:"Useful when numbers are close."},
+{id:"doubles",icon:"👯",name:"Doubles",level:"Foundation",desc:"Remember pairs with the same number.",example:"7 + 7 = 14",tip:"Use doubles as anchors."},
+{id:"doublesSub",icon:"↩️",name:"Doubles Subtraction",level:"Foundation",desc:"Use a double fact to find the missing part.",example:"14 − 7 = 7",tip:"Think of the matching double: 7 + 7 = 14."},
+{id:"plus9",icon:"➕9️⃣",name:"+9 Trick",level:"Foundation",desc:"Add 10, then subtract 1.",example:"36 + 9 = 46 − 1 = 45",tip:"+9 = +10 − 1."},
+{id:"minus9",icon:"➖9️⃣",name:"−9 Trick",level:"Foundation",desc:"Subtract 10, then add 1.",example:"52 − 9 = 42 + 1 = 43",tip:"−9 = −10 + 1."},
+{id:"plus11",icon:"➕",name:"+11 Trick",level:"Foundation",desc:"Add 10 and then add 1.",example:"47 + 11 = 58",tip:"+11 = +10 + 1."},
+{id:"minus11",icon:"➖",name:"−11 Trick",level:"Foundation",desc:"Subtract 10 and then subtract 1.",example:"64 − 11 = 53",tip:"−11 = −10 − 1."},
+{id:"place",icon:"🏠",name:"Tens + Ones",level:"Foundation",desc:"Split numbers into tens and ones.",example:"34 + 25 = 30 + 20 + 4 + 5 = 59",tip:"Place value makes mental addition easier."},
+{id:"placeSub",icon:"🏠",name:"Tens − Ones",level:"Foundation",desc:"Split numbers into tens and ones for subtraction.",example:"67 − 24 = 60 − 20 + 7 − 4 = 43",tip:"Break numbers into tens and ones."},
+{id:"comp",icon:"⚖️",name:"Compensation",level:"Foundation",desc:"Round one number, calculate, then correct.",example:"49 + 27 = 50 + 27 − 1 = 76",tip:"Change the number to a friendly one."},
+{id:"compSub",icon:"⚖️",name:"Compensation Subtraction",level:"Foundation",desc:"Round the number, subtract, then correct.",example:"52 − 19 = 52 − 20 + 1 = 33",tip:"Subtract a friendly number, then correct."},
+
+{id:"addparts",icon:"🔁",name:"Add in Parts",level:"Foundation",desc:"Break the second number into tens and ones.",example:"24 + 13 = 24 + 10 + 3 = 37",tip:"Add the tens first, then the ones."},
+
+{id:"subparts",icon:"↩️",name:"Subtract in Parts",level:"Foundation",desc:"Break the number into tens and ones.",example:"47 − 13 = 47 − 10 − 3 = 34",tip:"Subtract the tens first, then the ones."},
+
+{id:"plus19",icon:"1️⃣9️⃣",name:"+19 Trick",level:"Fast Arithmetic",desc:"Add 20, then subtract 1.",example:"46 + 19 = 66 − 1 = 65",tip:"+19 = +20 − 1."},
+{id:"plus29",icon:"2️⃣9️⃣",name:"+29 Trick",level:"Fast Arithmetic",desc:"Add 30, then subtract 1.",example:"58 + 29 = 88 − 1 = 87",tip:"+29 = +30 − 1."},
+{id:"plus49",icon:"4️⃣9️⃣",name:"+49 Trick",level:"Fast Arithmetic",desc:"Add 50, then subtract 1.",example:"72 + 49 = 122 − 1 = 121",tip:"+49 = +50 − 1."},
+{id:"minus19",icon:"➖",name:"−19 Trick",level:"Fast Arithmetic",desc:"Subtract 20, then add 1.",example:"84 − 19 = 64 + 1 = 65",tip:"−19 = −20 + 1."},
+{id:"minus29",icon:"➖",name:"−29 Trick",level:"Fast Arithmetic",desc:"Subtract 30, then add 1.",example:"93 − 29 = 63 + 1 = 64",tip:"−29 = −30 + 1."},
+{id:"plus99",icon:"💯",name:"+99 / −99",level:"Fast Arithmetic",desc:"Use 100 and correct by 1.",example:"245 + 99 = 345 − 1 = 344",tip:"Think ±100 with a correction."},
+{id:"plus101",icon:"💯",name:"+101 / −101",level:"Fast Arithmetic",desc:"Use 100 and one more.",example:"398 + 101 = 498 + 1 = 499",tip:"±101 = ±100 ±1."},
+{id:"bridge100",icon:"🌉",name:"Bridge 100",level:"Fast Arithmetic",desc:"Jump through 100 using friendly chunks.",example:"97 + 8 = 100 + 5 = 105",tip:"Reach the round number first."},
+{id:"ltr",icon:"➡️",name:"Left-to-Right Addition",level:"Fast Arithmetic",desc:"Add the largest place values first.",example:"347 + 125 = 400 + 60 + 12 = 472",tip:"Keep a running total."},
+{id:"half",icon:"✂️",name:"Halving",level:"Fast Arithmetic",desc:"Find half quickly, often to support ×5 or percentages.",example:"Half of 86 = 43",tip:"Split even numbers into two equal parts."},
+
+{id:"x2",icon:"✖️2️⃣",name:"×2",level:"Multiplication",desc:"Double the number.",example:"27 × 2 = 54",tip:"×2 means double."},
+{id:"x4",icon:"✖️4️⃣",name:"×4",level:"Multiplication",desc:"Double twice.",example:"18 × 4 = 36 × 2 = 72",tip:"×4 = double, then double again."},
+{id:"x5",icon:"✖️5️⃣",name:"×5",level:"Multiplication",desc:"Multiply by 10 and halve.",example:"24 × 5 = 240 ÷ 2 = 120",tip:"×5 = ×10 ÷2."},
+{id:"x8",icon:"✖️8️⃣",name:"×8",level:"Multiplication",desc:"Double three times.",example:"13 × 8 = 26 → 52 → 104",tip:"×8 = double ×3."},
+{id:"x9",icon:"✖️9️⃣",name:"×9",level:"Multiplication",desc:"Multiply by 10 and subtract one group.",example:"37 × 9 = 370 − 37 = 333",tip:"×9 = ×10 − original."},
+{id:"x10",icon:"🔟",name:"×10",level:"Multiplication",desc:"Shift one place in base 10.",example:"46 × 10 = 460",tip:"Append a zero for whole numbers."},
+{id:"x11",icon:"1️⃣1️⃣",name:"×11",level:"Multiplication",desc:"Break ×11 into ×10 + ×1 for a reliable mental calculation.",example:"23 × 11 = 230 + 23 = 253",tip:"Think ×11 = ×10 + ×1."},
+{id:"x12",icon:"1️⃣2️⃣",name:"×12",level:"Multiplication",desc:"Multiply by 10 and by 2, then add.",example:"24 × 12 = 240 + 48 = 288",tip:"×12 = ×10 + ×2."},
+{id:"x15",icon:"1️⃣5️⃣",name:"×15",level:"Multiplication",desc:"Multiply by 10 and by 5.",example:"28 × 15 = 280 + 140 = 420",tip:"×15 = ×10 + ×5."},
+{id:"x20",icon:"2️⃣0️⃣",name:"×20",level:"Multiplication",desc:"Multiply by 2 and append a zero.",example:"37 × 20 = 740",tip:"×20 = ×2 ×10."},
+{id:"x25",icon:"2️⃣5️⃣",name:"×25",level:"Multiplication",desc:"Divide by 4, then multiply by 100 when convenient.",example:"36 × 25 = 9 × 100 = 900",tip:"×25 = ×100 ÷4."},
+{id:"x50",icon:"5️⃣0️⃣",name:"×50",level:"Multiplication",desc:"Multiply by 100 and halve.",example:"38 × 50 = 3800 ÷2 = 1900",tip:"×50 = ×100 ÷2."},
+{id:"x99",icon:"9️⃣9️⃣",name:"×99",level:"Multiplication",desc:"Multiply by 100 and subtract one original group.",example:"32 × 99 = 3200 − 32 = 3168",tip:"×99 = ×100 − ×1."},
+{id:"x101",icon:"1️⃣0️⃣1️⃣",name:"×101",level:"Multiplication",desc:"Multiply by 100 and add one original group.",example:"32 × 101 = 3200 + 32 = 3232",tip:"×101 = ×100 + ×1."},
+{id:"factor",icon:"🧩",name:"Factor Multiplication",level:"Multiplication",desc:"Break a factor into easier factors.",example:"16 × 25 = 16 ÷4 ×100 = 400",tip:"Look for factors like 25, 50, 100."},
+
+{id:"div5",icon:"➗5️⃣",name:"÷5",level:"Division",desc:"Multiply by 2 and divide by 10.",example:"145 ÷ 5 = 290 ÷10 = 29",tip:"÷5 = ×2 ÷10."},
+{id:"div10",icon:"➗🔟",name:"÷10",level:"Division",desc:"Divide by ten.",example:"630 ÷10 = 63",tip:"Move one place in base 10."},
+{id:"div25",icon:"➗2️⃣5️⃣",name:"÷25",level:"Division",desc:"Multiply by 4 and divide by 100.",example:"900 ÷25 = 3600 ÷100 = 36",tip:"÷25 = ×4 ÷100."},
+{id:"div100",icon:"💯",name:"÷100",level:"Division",desc:"Divide by one hundred.",example:"4500 ÷100 = 45",tip:"Move two places in base 10."},
+{id:"div2",icon:"➗2️⃣",name:"÷2",level:"Division",desc:"Find half.",example:"86 ÷2 = 43",tip:"Halving is division by 2."},
+
+{id:"pct10",icon:"🔟%",name:"10%",level:"Fractions & Percentages",desc:"10% is one tenth.",example:"10% of 250 = 25",tip:"Divide by 10."},
+{id:"pct5",icon:"5️⃣%",name:"5%",level:"Fractions & Percentages",desc:"5% is half of 10%.",example:"5% of 240 = 12",tip:"Find 10%, then halve."},
+{id:"pct20",icon:"2️⃣0️⃣%",name:"20%",level:"Fractions & Percentages",desc:"20% is one fifth.",example:"20% of 150 = 30",tip:"Divide by 5."},
+{id:"pct25",icon:"2️⃣5️⃣%",name:"25%",level:"Fractions & Percentages",desc:"25% is one quarter.",example:"25% of 80 = 20",tip:"Divide by 4."},
+{id:"pct50",icon:"5️⃣0️⃣%",name:"50%",level:"Fractions & Percentages",desc:"50% is half.",example:"50% of 74 = 37",tip:"Find half."},
+{id:"pct75",icon:"7️⃣5️⃣%",name:"75%",level:"Fractions & Percentages",desc:"75% is three quarters.",example:"75% of 80 = 60",tip:"Find one quarter and multiply by 3."},
+{id:"pct1",icon:"1️⃣%",name:"1%",level:"Fractions & Percentages",desc:"1% is one hundredth.",example:"1% of 600 = 6",tip:"Divide by 100."},
+{id:"pct125",icon:"12.5%",name:"12.5%",level:"Fractions & Percentages",desc:"12.5% equals one eighth.",example:"12.5% of 80 = 10",tip:"Divide by 8."},
+{id:"fracnum",icon:"🍰",name:"Fraction of a Number",level:"Fractions & Percentages",desc:"Divide by the denominator, then multiply by the numerator.",example:"3/4 of 80 = 80÷4×3 = 60",tip:"Denominator first, numerator second."},
+{id:"fraccompare",icon:"⚖️",name:"Compare Fractions",level:"Fractions & Percentages",desc:"Use common denominators or cross multiplication.",example:"3/5 > 1/2 because 6/10 > 5/10",tip:"Make the comparison friendly."},
+
+{id:"ratio",icon:"⚖️",name:"Ratio Simplification",level:"Ratio & Proportion",desc:"Divide both parts by the same common factor.",example:"12:18 = 2:3",tip:"Find the greatest common factor when possible."},
+{id:"proportion",icon:"🔗",name:"Proportion",level:"Ratio & Proportion",desc:"Scale both parts by the same factor.",example:"2:3 = 8:12",tip:"Find the scale factor."},
+{id:"unitrate",icon:"1️⃣",name:"Unit Rate",level:"Ratio & Proportion",desc:"Find the amount for one unit first.",example:"₹240 for 6 items → ₹40 each",tip:"Divide total by quantity."},
+
+{id:"integers",icon:"➕➖",name:"Integer Signs",level:"Class 6–7",desc:"Same signs add magnitudes; different signs subtract magnitudes.",example:"−8 + 13 = 5",tip:"Think of direction on a number line."},
+{id:"negsub",icon:"↔️",name:"Subtracting Negatives",level:"Class 6–7",desc:"Subtracting a negative is adding.",example:"7 − (−4) = 11",tip:"Two negatives here become a plus."},
+{id:"avg",icon:"📊",name:"Average",level:"Class 6–7",desc:"Average = total ÷ count.",example:"10, 20, 30 → average 20",tip:"Use a convenient reference value."},
+{id:"divrules",icon:"🔍",name:"Divisibility Rules",level:"Class 6–7",desc:"Use quick tests for 2, 3, 5, 9 and 10.",example:"738 is divisible by 9 because 7+3+8=18",tip:"Digit sums are powerful."},
+{id:"percentchange",icon:"📈",name:"Percentage Change",level:"Class 6–7",desc:"Change ÷ original × 100.",example:"50 to 60: 10/50×100 = 20%",tip:"Original value is the base."},
+
+{id:"order",icon:"🧮",name:"Order of Operations",level:"Class 7–8",desc:"Follow grouping, powers, multiplication/division, addition/subtraction.",example:"3 + 4×5 = 23",tip:"Multiplication before addition."},
+{id:"square5",icon:"🟦",name:"Squares Ending in 5",level:"Class 7–8",desc:"For n5², multiply n by n+1 and append 25.",example:"35² = 3×4 | 25 = 1225",tip:"Works for whole numbers ending in 5."},
+{id:"near50",icon:"5️⃣0️⃣",name:"Squares Near 50",level:"Class 7–8",desc:"Use (50±a)² = 2500 ±100a + a².",example:"48² = 2304",tip:"Use the binomial identity."},
+{id:"near100",icon:"💯",name:"Squares Near 100",level:"Class 7–8",desc:"Use (100±a)².",example:"97² = 9409",tip:"Think 100−3."},
+{id:"diffsq",icon:"🧩",name:"Difference of Squares",level:"Class 7–8",desc:"a²−b² = (a−b)(a+b).",example:"51²−49² = 2×100 = 200",tip:"Look for close squares."},
+{id:"pyth",icon:"📐",name:"Pythagorean Triples",level:"Class 7–8",desc:"Recognize common right-triangle triples.",example:"3,4,5 and 5,12,13",tip:"Scale a known triple when needed."},
+
+{id:"scientific",icon:"🔬",name:"Powers of 10",level:"Class 8–10",desc:"Use powers of ten to shift place values.",example:"4.2×10³ = 4200",tip:"Track the exponent carefully."},
+{id:"binomial",icon:"🧠",name:"Binomial Squares",level:"Class 8–10",desc:"Use (a+b)² = a²+2ab+b² to square numbers near a friendly multiple of 10.",example:"23² = 20²+2×20×3+3² = 529",tip:"Use nearby round numbers."},
+{id:"quadratic",icon:"✖️",name:"Quadratic Factoring",level:"Class 8–10",desc:"Find factors whose product is c and sum is b.",example:"x²+7x+12 = (x+3)(x+4)",tip:"Look for factor pairs."},
+{id:"speed",icon:"🚗",name:"Speed-Distance-Time",level:"Class 8–10",desc:"Use d=st, s=d/t, t=d/s.",example:"120 km in 3 h → 40 km/h",tip:"Keep units consistent."},
+{id:"profit",icon:"💰",name:"Profit & Loss",level:"Class 8–10",desc:"Profit = SP−CP; loss = CP−SP.",example:"CP ₹80, SP ₹100 → profit ₹20",tip:"Percentage is based on CP."},
+{id:"discount",icon:"🏷️",name:"Discount",level:"Class 8–10",desc:"Discount amount = marked price × discount rate.",example:"20% off ₹500 = ₹100 discount",tip:"Final price = 80% of ₹500 = ₹400."},
+{id:"compound",icon:"📈",name:"Compound Growth",level:"Class 8–10",desc:"Repeated percentage growth multiplies by the growth factor.",example:"₹100 ×1.1×1.1 = ₹121",tip:"10% growth means ×1.10."}
+];
+const LEVELS=["All Levels","Foundation","Fast Arithmetic","Multiplication","Division","Fractions & Percentages","Ratio & Proportion","Class 6–7","Class 7–8","Class 8–10"];
+const ICONS={"All Levels":"🌟","Foundation":"🌱","Fast Arithmetic":"⚡","Multiplication":"✖️","Division":"➗","Fractions & Percentages":"🍰","Ratio & Proportion":"⚖️","Class 6–7":"🚀","Class 7–8":"🧠","Class 8–10":"🏆"};
+
+let level=localStorage.getItem("mmLevel")||"All Levels";
+let id=localStorage.getItem("mmTrick")||TRICKS[0].id;
+let qi=0,score=0,locked=false,questions=[];
+let streak=Number(localStorage.getItem("mmStreak")||0);
+let stars=Number(localStorage.getItem("mmStars")||0);
+let best=Number(localStorage.getItem("mmBest")||0);
+let progress=JSON.parse(localStorage.getItem("mmProgress")||"{}");
+
+const $=id=>document.getElementById(id);
+const current=()=>TRICKS.find(t=>t.id===id)||TRICKS[0];
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const uniq=a=>[...new Set(a)];
+
+function save(){
+ localStorage.setItem("mmLevel",level);
+ localStorage.setItem("mmTrick",id);
+ localStorage.setItem("mmStreak",streak);
+ localStorage.setItem("mmStars",stars);
+ localStorage.setItem("mmBest",best);
+ localStorage.setItem("mmProgress",JSON.stringify(progress));
+ updateStats();
+}
+function updateStats(){
+ $("streak").textContent=streak;
+ $("stars").textContent=stars;
+ $("best").textContent=best;
+}
+
+function openMenu(){ $("drawer").classList.add("open"); $("scrim").classList.add("open"); }
+function closeMenu(){ $("drawer").classList.remove("open"); $("scrim").classList.remove("open"); }
+
+function renderLevels(){
+ const box=$("levels"); box.innerHTML="";
+ LEVELS.forEach(x=>{
+   const b=document.createElement("button");
+   b.className="level"+(x===level?" active":"");
+   b.innerHTML=`<span class="li">${ICONS[x]}</span><span>${x}</span>`;
+   b.onclick=()=>chooseLevel(x);
+   box.appendChild(b);
+ });
+ $("currentLevel").textContent=ICONS[level]+" "+level;
+}
+
+function chooseLevel(x){
+ level=x;
+ const list=level==="All Levels"?TRICKS:TRICKS.filter(t=>t.level===level);
+ if(!list.some(t=>t.id===id)) id=list[0].id;
+ save();
+ renderLevels();
+ renderTrick();
+ closeMenu();
+ start();
+}
+
+function renderTrick(){
+ const s=$("trick");
+ const list=level==="All Levels"?TRICKS:TRICKS.filter(t=>t.level===level);
+ s.innerHTML="";
+ if(!list.length){
+   s.innerHTML='<option value="">No tricks available</option>';
+   return;
+ }
+ list.forEach(t=>{
+   const o=document.createElement("option");
+   o.value=t.id;
+   o.textContent=t.icon+"  "+t.name;
+   s.appendChild(o);
+ });
+ s.value=id;
+ renderInfo();
+}
+
+function renderInfo(){
+ const t=current();
+ $("info").innerHTML=`<div class="trickinfo">
+ <span class="badge">${t.level}</span>
+ <div class="tname">${t.icon} ${t.name}</div>
+ <div>${t.desc}</div>
+ <div class="example">💡 ${t.example}</div>
+ <div class="tip">⭐ ${t.tip}</div>
+ </div>`;
+}
+
+/* ---------- Question generator ---------- */
+function makeQuestion(t) {
+  let a, b, n, ans, text, explanation;
+  const pct = x => `${x}%`;
+
+  switch (t.id) {
+    case "make10":
+      a = rand(2, 9); ans = 10 - a; text = `${a} + ? = 10`;
+      explanation = `💡 ${a} needs ${ans} more to make 10: ${a} + ${ans} = 10.`;
+      break;
+    case "make10sub":
+      a = rand(2, 9); ans = 10 - a; text = `10 − ${a} = ?`;
+      explanation = `💡 Think of the number bond: ${a} + ${ans} = 10, so 10 − ${a} = ${ans}.`;
+      break;
+    case "bridge10": {
+      a = rand(6, 9); const need = 10 - a; const remaining = rand(0, 9 - need); b = need + remaining;
+      ans = a + b; text = `${a} + ${b} = ?`;
+      explanation = remaining === 0 ? `💡 ${a} + ${b} = ${a} + ${need} = 10.` : `💡 ${a} + ${b} = ${a} + ${need} + ${remaining} = 10 + ${remaining} = ${ans}`;
+      break;
+    }
+    case "bridge10sub": {
+      a = rand(11, 19); const need = a - 10; b = rand(need, 9); const remaining = b - need;
+      ans = a - b; text = `${a} − ${b} = ?`;
+      explanation = remaining === 0 ? `💡 ${a} − ${b} = ${a} − ${need} = 10.` : `💡 ${a} − ${b} = ${a} − ${need} − ${remaining} = 10 − ${remaining} = ${ans}`;
+      break;
+    }
+    case "counton":
+      a = rand(10, 80); b = rand(2, 9); ans = a + b; text = `${a} + ${b} = ?`;
+      explanation = `💡 Start at ${a} and count on ${b}: ${Array.from({length:b},(_,i)=>a+i+1).join(" → ")} = ${ans}.`;
+      break;
+    case "countup":
+      a = rand(40, 100); b = rand(1, 15); ans = b; text = `${a} − ${a - b} = ?`;
+      explanation = `💡 Count up from ${a-b} to ${a}: the difference is ${b}.`;
+      break;
+    case "doubles":
+      a = rand(2, 40); ans = a * 2; text = `${a} + ${a} = ?`;
+      explanation = `💡 A double means two equal groups: ${a} + ${a} = ${ans}.`;
+      break;
+    case "doublesSub":
+      a = rand(2, 40); ans = a; text = `${a * 2} − ${a} = ?`;
+      explanation = `💡 Think backwards: ${a} + ${a} = ${a*2}, so ${a*2} − ${a} = ${a}.`;
+      break;
+    case "plus9":
+      a = rand(10, 90); ans = a + 9; text = `${a} + 9 = ?`;
+      explanation = `💡 +9 = +10 − 1: ${a} + 10 − 1 = ${ans}.`;
+      break;
+    case "minus9":
+      a = rand(20, 100); ans = a - 9; text = `${a} − 9 = ?`;
+      explanation = `💡 −9 = −10 + 1: ${a} − 10 + 1 = ${ans}.`;
+      break;
+    case "plus11":
+      a = rand(10, 90); ans = a + 11; text = `${a} + 11 = ?`;
+      explanation = `💡 +11 = +10 + 1: ${a} + 10 + 1 = ${ans}.`;
+      break;
+    case "minus11":
+      a = rand(20, 100); ans = a - 11; text = `${a} − 11 = ?`;
+      explanation = `💡 −11 = −10 − 1: ${a} − 10 − 1 = ${ans}.`;
+      break;
+    case "place": {
+      a = rand(10, 80); b = rand(10, 80); ans = a+b; text = `${a} + ${b} = ?`;
+      const at=Math.floor(a/10)*10, ao=a%10, bt=Math.floor(b/10)*10, bo=b%10;
+      explanation=`💡 Split tens and ones: ${at} + ${bt} + ${ao} + ${bo} = ${ans}.`;
+      break;
+    }
+    case "placeSub": {
+      // Keep the ones subtraction non-negative so the visual method stays simple.
+      a = rand(40, 90); b = rand(10, a-10);
+      while (a%10 < b%10) b = rand(10, a-10);
+      ans=a-b; text=`${a} − ${b} = ?`;
+      const at=Math.floor(a/10)*10, bt=Math.floor(b/10)*10, ao=a%10, bo=b%10;
+      explanation=`💡 Split tens and ones: ${at} − ${bt} + ${ao} − ${bo} = ${ans}.`;
+      break;
+    }
+    case "comp": {
+      a=rand(20,99); b=rand(10,60); ans=a+b; text=`${a} + ${b} = ?`;
+      const rounded=Math.ceil(a/10)*10, correction=rounded-a;
+      explanation=`💡 Make ${a} friendly: ${rounded} + ${b} − ${correction} = ${ans}.`;
+      break;
+    }
+    case "compSub": {
+      a=rand(30,100); b=rand(11,30); const rounded=Math.round(b/10)*10, correction=rounded-b;
+      ans=a-b; text=`${a} − ${b} = ?`;
+      explanation=`💡 Use the friendly ${rounded}: ${a} − ${rounded} + ${correction} = ${ans}.`;
+      break;
+    }
+    case "addparts": {
+      a=rand(20,80); b=rand(11,39); ans=a+b; text=`${a} + ${b} = ?`;
+      explanation=`💡 Break ${b} into tens and ones: ${a} + ${Math.floor(b/10)*10} + ${b%10} = ${ans}.`;
+      break;
+    }
+    case "subparts": {
+      a=rand(40,90); b=rand(11,a-10); ans=a-b; text=`${a} − ${b} = ?`;
+      explanation=`💡 Break ${b} into tens and ones: ${a} − ${Math.floor(b/10)*10} − ${b%10} = ${ans}.`;
+      break;
+    }
+    case "plus19": a=rand(20,90); ans=a+19; text=`${a} + 19 = ?`; explanation=`💡 +19 = +20 − 1: ${a} + 20 − 1 = ${ans}.`; break;
+    case "plus29": a=rand(20,90); ans=a+29; text=`${a} + 29 = ?`; explanation=`💡 +29 = +30 − 1: ${a} + 30 − 1 = ${ans}.`; break;
+    case "plus49": a=rand(20,90); ans=a+49; text=`${a} + 49 = ?`; explanation=`💡 +49 = +50 − 1: ${a} + 50 − 1 = ${ans}.`; break;
+    case "minus19": a=rand(30,120); ans=a-19; text=`${a} − 19 = ?`; explanation=`💡 −19 = −20 + 1: ${a} − 20 + 1 = ${ans}.`; break;
+    case "minus29": a=rand(40,130); ans=a-29; text=`${a} − 29 = ?`; explanation=`💡 −29 = −30 + 1: ${a} − 30 + 1 = ${ans}.`; break;
+    case "plus99": a=rand(20,400); ans=a+99; text=`${a} + 99 = ?`; explanation=`💡 +99 = +100 − 1: ${a} + 100 − 1 = ${ans}.`; break;
+    case "plus101": a=rand(20,400); ans=a+101; text=`${a} + 101 = ?`; explanation=`💡 +101 = +100 + 1: ${a} + 100 + 1 = ${ans}.`; break;
+    case "bridge100": { a=rand(85,99); const need=100-a; b=need+rand(0,20-need); ans=a+b; text=`${a} + ${b} = ?`; const rest=b-need; explanation=rest===0?`💡 ${a} needs ${need} to reach 100, so the answer is 100.`:`💡 Reach 100 first: ${a} + ${need} + ${rest} = 100 + ${rest} = ${ans}.`; break; }
+    case "ltr": { a=rand(100,600); b=rand(100,300); ans=a+b; text=`${a} + ${b} = ?`; const ah=Math.floor(a/100)*100, at=Math.floor((a%100)/10)*10, ao=a%10, bh=Math.floor(b/100)*100, bt=Math.floor((b%100)/10)*10, bo=b%10; explanation=`💡 Add left to right: ${ah+bh} + ${at+bt} + ${ao+bo} = ${ans}.`; break; }
+    case "half": a=rand(10,100)*2; ans=a/2; text=`Half of ${a} = ?`; explanation=`💡 Split ${a} into two equal parts: ${a} ÷ 2 = ${ans}.`; break;
+
+    case "x2": a=rand(5,60); ans=a*2; text=`${a} × 2 = ?`; explanation=`💡 ×2 means double: ${a}+${a}=${ans}.`; break;
+    case "x4": a=rand(5,40); ans=a*4; text=`${a} × 4 = ?`; explanation=`💡 Double twice: ${a}×2=${a*2}, then ×2=${ans}.`; break;
+    case "x5": a=rand(5,60); ans=a*5; text=`${a} × 5 = ?`; explanation=`💡 ×5 = ×10 ÷2: ${a*10} ÷ 2 = ${ans}.`; break;
+    case "x8": a=rand(3,30); ans=a*8; explanation=`💡 Double three times: ${a} → ${a*2} → ${a*4} → ${ans}.`; text=`${a} × 8 = ?`; break;
+    case "x9": a=rand(5,50); ans=a*9; text=`${a} × 9 = ?`; explanation=`💡 ×9 = ×10 − ×1: ${a*10} − ${a} = ${ans}.`; break;
+    case "x10": a=rand(5,90); ans=a*10; text=`${a} × 10 = ?`; explanation=`💡 ×10 moves the number one place: ${a} → ${ans}.`; break;
+    case "x11": {
+      a=rand(10,45); ans=a*11; text=`${a} × 11 = ?`;
+      explanation=`💡 ×11 = ×10 + ×1: ${a*10} + ${a} = ${ans}.`;
+      break;
+    }
+    case "x12": a=rand(5,40); ans=a*12; text=`${a} × 12 = ?`; explanation=`💡 ×12 = ×10 + ×2: ${a*10} + ${a*2} = ${ans}.`; break;
+    case "x15": a=rand(5,40); ans=a*15; text=`${a} × 15 = ?`; explanation=`💡 ×15 = ×10 + ×5: ${a*10} + ${a*5} = ${ans}.`; break;
+    case "x20": a=rand(5,50); ans=a*20; text=`${a} × 20 = ?`; explanation=`💡 ×20 = ×2 then ×10: ${a*2} → ${ans}.`; break;
+    case "x25": a=rand(4,40); ans=a*25; text=`${a} × 25 = ?`; explanation=`💡 ×25 = ×100 ÷4: ${a*100} ÷ 4 = ${ans}.`; break;
+    case "x50": a=rand(2,40); ans=a*50; text=`${a} × 50 = ?`; explanation=`💡 ×50 = ×100 ÷2: ${a*100} ÷2 = ${ans}.`; break;
+    case "x99": a=rand(5,40); ans=a*99; text=`${a} × 99 = ?`; explanation=`💡 ×99 = ×100 − ×1: ${a*100} − ${a} = ${ans}.`; break;
+    case "x101": a=rand(5,40); ans=a*101; text=`${a} × 101 = ?`; explanation=`💡 ×101 = ×100 + ×1: ${a*100} + ${a} = ${ans}.`; break;
+    case "factor": { const f=rand(2,8), k=rand(4,15); a=f*k; b=25; ans=a*b; text=`${a} × 25 = ?`; explanation=`💡 ×25 = ×100 ÷4: ${a*100} ÷4 = ${ans}.`; break; }
+
+    case "div5": a=rand(2,40)*5; ans=a/5; text=`${a} ÷ 5 = ?`; explanation=`💡 ÷5 = ×2 ÷10: ${a*2} ÷10 = ${ans}.`; break;
+    case "div10": a=rand(2,80)*10; ans=a/10; text=`${a} ÷ 10 = ?`; explanation=`💡 Divide by 10: ${a} → ${ans}.`; break;
+    case "div25": a=rand(2,30)*25; ans=a/25; text=`${a} ÷ 25 = ?`; explanation=`💡 ÷25 = ×4 ÷100: ${a*4} ÷100 = ${ans}.`; break;
+    case "div100": a=rand(2,60)*100; ans=a/100; text=`${a} ÷ 100 = ?`; explanation=`💡 Divide by 100: ${a} → ${ans}.`; break;
+    case "div2": a=rand(2,60)*2; ans=a/2; text=`${a} ÷ 2 = ?`; explanation=`💡 ÷2 means find half: ${ans}.`; break;
+
+    case "pct10": a=rand(2,100)*10; ans=a/10; text=`10% of ${a} = ?`; explanation=`💡 10% means ÷10: ${a} ÷10 = ${ans}.`; break;
+    case "pct5": a=rand(2,100)*20; ans=a/20; text=`5% of ${a} = ?`; explanation=`💡 Find 10% (${a/10}), then halve it: ${ans}.`; break;
+    case "pct20": a=rand(2,100)*5; ans=a/5; text=`20% of ${a} = ?`; explanation=`💡 20% = 1/5: ${a} ÷5 = ${ans}.`; break;
+    case "pct25": a=rand(2,100)*4; ans=a/4; text=`25% of ${a} = ?`; explanation=`💡 25% = 1/4: ${a} ÷4 = ${ans}.`; break;
+    case "pct50": a=rand(2,100)*2; ans=a/2; text=`50% of ${a} = ?`; explanation=`💡 50% = half: ${a} ÷2 = ${ans}.`; break;
+    case "pct75": a=rand(2,50)*4; ans=a*3/4; text=`75% of ${a} = ?`; explanation=`💡 75% = 3/4: ${a} ÷4 ×3 = ${ans}.`; break;
+    case "pct1": a=rand(2,100)*100; ans=a/100; text=`1% of ${a} = ?`; explanation=`💡 1% means ÷100: ${a} ÷100 = ${ans}.`; break;
+    case "pct125": a=rand(2,60)*8; ans=a/8; text=`12.5% of ${a} = ?`; explanation=`💡 12.5% = 1/8: ${a} ÷8 = ${ans}.`; break;
+    case "fracnum": b=rand(2,8); a=rand(1,b-1); n=rand(2,30)*b; ans=n/b*a; text=`${a}/${b} of ${n} = ?`; explanation=`💡 Denominator first: ${n} ÷${b}=${n/b}; then ×${a}=${ans}.`; break;
+    case "fraccompare": { let x=rand(1,8),y=rand(x+1,10),p=rand(1,8),q=rand(p+1,10); while(x*q===y*p){p=rand(1,8);q=rand(p+1,10);} ans=(x/y>p/q)?`${x}/${y}`:`${p}/${q}`; text=`Which is larger: ${x}/${y} or ${p}/${q}?`; explanation=`💡 Compare by cross multiplication: ${x}×${q}=${x*q} and ${p}×${y}=${p*y}.`; break; }
+
+    case "ratio": { let g=rand(2,8),x=rand(2,10),y=rand(2,10); ans=`${x}:${y}`; text=`Simplify ${g*x}:${g*y}`; explanation=`💡 Divide both parts by ${g}: ${g*x}÷${g}:${g*y}÷${g} = ${x}:${y}.`; break; }
+    case "proportion": { a=rand(2,8); b=rand(2,8); let k=rand(2,6); ans=b*k; text=`If ${a}:${b} = ${a*k}: ?`; explanation=`💡 Scale both parts by ${k}: ${b}×${k} = ${ans}.`; break; }
+    case "unitrate": { b=rand(2,10); a=rand(2,20)*b; ans=a/b; text=`₹${a} for ${b} items → per item = ?`; explanation=`💡 Unit rate = total ÷ quantity: ₹${a} ÷ ${b} = ₹${ans}.`; break; }
+
+    case "integers": a=rand(-20,20); b=rand(-20,20); ans=a+b; text=`${a} + (${b}) = ?`; explanation=`💡 Move ${b<0?"left":"right"} ${Math.abs(b)} on the number line from ${a}: ${ans}.`; break;
+    case "negsub": a=rand(1,30); b=rand(1,20); ans=a+b; text=`${a} − (−${b}) = ?`; explanation=`💡 Subtracting a negative means adding: ${a} + ${b} = ${ans}.`; break;
+    case "avg": { let base=rand(10,50),d=rand(1,5); ans=base; text=`Average of ${base-d}, ${base}, ${base+d} = ?`; explanation=`💡 The middle number is the balanced average: ${base}.`; break; }
+    case "divrules": { const divisors=[2,3,5,9,10], d=divisors[rand(0,4)]; a=rand(10,99)*d; ans="Yes"; text=`Is ${a} divisible by ${d}?`; explanation=`💡 ${a} passes the quick test for ${d}, so Yes.`; break; }
+    case "percentchange": { a=rand(10,50); const increase=rand(1,4)*a; b=a+increase; ans=increase/a*100; text=`${a} to ${b}: percentage increase = ?%`; explanation=`💡 Change ÷ original ×100 = ${increase} ÷${a} ×100 = ${ans}%.`; break; }
+    case "order": { const x=rand(2,9),y=rand(2,6),z=rand(2,5); ans=x+y*z; text=`${x} + ${y} × ${z} = ?`; explanation=`💡 Multiply first: ${y}×${z}=${y*z}; then add ${x}: ${ans}.`; break; }
+    case "square5": a=rand(1,30); { const n5=10*a+5; ans=n5*n5; text=`${n5}² = ?`; explanation=`💡 For ${a}5²: ${a}×${a+1}=${a*(a+1)}, then append 25 → ${ans}.`; } break;
+    case "near50": a=rand(1,10); { const n50=50-a; ans=n50*n50; text=`${n50}² = ?`; explanation=`💡 ${n50}=50−${a}. Use 2500−100×${a}+${a}² = ${ans}.`; } break;
+    case "near100": a=rand(1,15); { const n100=100-a; ans=n100*n100; text=`${n100}² = ?`; explanation=`💡 ${n100}=100−${a}. Use 10000−200×${a}+${a}² = ${ans}.`; } break;
+    case "diffsq": a=rand(20,70); b=a-2; ans=a*a-b*b; text=`${a}² − ${b}² = ?`; explanation=`💡 Difference of squares: (${a}−${b})×(${a}+${b}) = 2×${a+b} = ${ans}.`; break;
+    case "pyth": { let k=rand(1,5),base=[[3,4,5],[5,12,13],[6,8,10]][rand(0,2)]; ans=base[2]*k; text=`Right triangle: legs ${base[0]*k} and ${base[1]*k}. Hypotenuse = ?`; explanation=`💡 Recognize the ${base.join("–")} triple and multiply by ${k}: ${ans}.`; break; }
+    case "scientific": a=rand(2,9); b=rand(1,4); ans=a*10**b; text=`${a} × 10^${b} = ?`; explanation=`💡 Move the decimal ${b} places right: ${a} → ${ans}.`; break;
+    case "binomial": { a=rand(10,30); const base=Math.floor(a/10)*10, r=a-base; ans=a*a; text=`${a}² = ?`; explanation=`💡 (${base}+${r})² = ${base}² + 2×${base}×${r} + ${r}² = ${ans}.`; break; }
+    case "quadratic": { let p=rand(2,9),q=rand(2,9); ans=`(${p}, ${q})`; text=`For x² + ${p+q}x + ${p*q}, factor numbers are ?`; explanation=`💡 Find two numbers with product ${p*q} and sum ${p+q}: ${p} and ${q}.`; break; }
+    case "speed": { let tt=rand(2,8),s=rand(20,80); ans=s; text=`${s*tt} km in ${tt} h → speed = ? km/h`; explanation=`💡 Speed = distance ÷ time: ${s*tt} ÷ ${tt} = ${s} km/h.`; break; }
+    case "profit": { let cp=rand(20,80)*5,pr=rand(1,8)*5; ans=cp*pr/100; text=`CP ₹${cp}, profit ${pr}% → profit = ₹?`; explanation=`💡 Profit = ${pr}% of CP: ₹${cp} × ${pr}/100 = ₹${ans}.`; break; }
+    case "discount": { let mp=rand(20,80)*10,d=rand(1,5)*10; ans=mp*d/100; text=`${d}% discount on ₹${mp} = ₹?`; explanation=`💡 Discount = ${d}% of marked price: ₹${mp}×${d}/100 = ₹${ans}.`; break; }
+    case "compound": { let r=rand(1,3)*10; ans=100*(1+r/100)**2; text=`₹100 grows ${r}% twice → ₹?`; explanation=`💡 Multiply by the growth factor twice: ₹100 × ${1+r/100} × ${1+r/100} = ₹${ans}.`; break; }
+    default:
+      a=rand(1,50); b=rand(1,50); ans=a+b; text=`${a} + ${b} = ?`; explanation=`💡 Add the two numbers: ${a}+${b}=${ans}.`;
+  }
+  return {text,ans,explanation};
+}
+
+function optionsFor(ans,t){
+  if(typeof ans === "string"){
+    if(t.id === "divrules") return ["Yes","No"];
+    if(t.id === "quadratic") return uniq([ans,"(2, 3)","(3, 5)","(4, 6)"]).slice(0,4).sort(()=>Math.random()-0.5);
+    if(t.id === "ratio"){
+      const [x,y]=ans.split(":").map(Number);
+      return uniq([ans,`${x+1}:${y}`,`${x}:${y+1}`,`${x*2}:${y}`]).slice(0,4).sort(()=>Math.random()-0.5);
+    }
+    if(t.id === "fraccompare"){
+      const vals=[ans,"1/2","2/3","3/4","4/5","5/6"];
+      return uniq(vals).slice(0,4).sort(()=>Math.random()-0.5);
+    }
+    return [ans,"A","B","C"].sort(()=>Math.random()-0.5);
+  }
+  const step=Math.max(1,Math.round(Math.abs(ans)*0.05));
+  const candidates=[ans,ans+step,ans-step,ans+2*step,ans-2*step,ans+1,ans-1];
+  const vals=uniq(candidates);
+  while(vals.length<4){ vals.push(ans+rand(-10,10)); }
+  return uniq(vals).slice(0,4).sort(()=>Math.random()-0.5);
+}
+
+function showQuestion(){
+ const item=questions[qi];
+ $("qn").textContent=qi+1;
+ $("live").textContent=score;
+ $("bar").style.width=((qi/10)*100)+"%";
+ $("question").textContent=item.text;
+ $("feedback").textContent="";
+ const box=$("answers");box.innerHTML="";
+ optionsFor(item.ans,current()).forEach(v=>{
+   const b=document.createElement("button");
+   b.className="answer";
+   b.textContent=v;
+   b.onclick=()=>answer(b,String(v)===String(item.ans));
+   box.appendChild(b);
+ });
+}
+
+function answer(btn,ok){
+ if(locked)return;
+ locked=true;
+ const item=questions[qi];
+ document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
+ if(ok){
+   score++;btn.classList.add("correct");$("feedback").textContent="✨ Correct! "+(item.explanation||"");
+ }else{
+   btn.classList.add("wrong");
+   $("feedback").textContent="💡 Answer: "+item.ans+(item.explanation?" • "+item.explanation.replace(/^💡\s*/,""):"");
+   document.querySelectorAll(".answer").forEach(b=>{
+     if(b.textContent===String(item.ans))b.classList.add("correct");
+   });
+ }
+ setTimeout(()=>{qi++;if(qi>=10)finish();else{locked=false;showQuestion()}},1400);
+}
+
+function start(){
+ qi=0;score=0;locked=false;
+ $("result").style.display="none";
+ questions=Array.from({length:10},()=>makeQuestion(current()));
+ if(!questions.length || !questions[0].text){
+   $("question").textContent="Try another trick";
+   return;
+ }
+ showQuestion();
+}
+
+function finish(){
+ $("bar").style.width="100%";
+ progress[id]=Math.max(Number(progress[id]||0),score);
+ if(score>best)best=score;
+ if(score>=8){stars+=score===10?3:2;streak++;}else streak=0;
+ save();
+ $("resultText").textContent=`You scored ${score}/10 • ${score>=8?"⭐ Great job!":"💪 Keep practising!"}`;
+ $("result").style.display="block";
+ $("question").textContent="Round complete!";
+ $("answers").innerHTML="";
+ $("feedback").textContent="";
+ renderProgress();
+}
+
+function renderBook(){
+ const box=$("book");box.innerHTML="";
+ LEVELS.slice(1).forEach(l=>{
+   const g=document.createElement("details");g.className="group";
+   g.innerHTML=`<summary>${ICONS[l]} ${l} · ${TRICKS.filter(t=>t.level===l).length} tricks</summary>`;
+   TRICKS.filter(t=>t.level===l).forEach(t=>{
+     const d=document.createElement("details");d.className="item";
+     d.innerHTML=`<summary>${t.icon} ${t.name}</summary><div class="inside">${t.desc}<div class="example">💡 ${t.example}</div><div class="tip">⭐ ${t.tip}</div></div>`;
+     g.appendChild(d);
+   });
+   box.appendChild(g);
+ });
+}
+
+function renderProgress(){
+ const box=$("prog");box.innerHTML="";
+ TRICKS.forEach(t=>{
+   const r=document.createElement("div");r.className="row";
+   r.innerHTML=`<span>${t.icon} ${t.name}</span><b>${progress[t.id]||0}/10</b>`;
+   box.appendChild(r);
+ });
+}
+
+$("menu").onclick=openMenu;
+$("scrim").onclick=closeMenu;
+$("again").onclick=start;
+$("trick").addEventListener("change",e=>{
+ id=e.target.value;
+ save();
+ renderInfo();
+ start();
+});
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+ document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");
+ $(b.dataset.tab).classList.add("active");
+ if(b.dataset.tab==="book")renderBook();
+ if(b.dataset.tab==="progress")renderProgress();
+});
+
+function init(){
+ if(!LEVELS.includes(level))level="All Levels";
+ if(!TRICKS.some(t=>t.id===id))id=TRICKS[0].id;
+ renderLevels();
+ renderTrick();
+ renderBook();
+ renderProgress();
+ updateStats();
+ start();
+}
+
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
+else init();
+</script>
+
+
+
+</body></html>
