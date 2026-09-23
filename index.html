@@ -683,9 +683,33 @@ const TRICKS=[
 {id:"discount",icon:"🏷️",name:"Discount",level:"Class 8–10",desc:"Discount amount = marked price × discount rate.",example:"20% off ₹500 = ₹100 discount",tip:"Final price = 80% of ₹500 = ₹400."},
 {id:"compound",icon:"📈",name:"Compound Growth",level:"Class 8–10",desc:"Repeated percentage growth multiplies by the growth factor.",example:"₹100 ×1.1×1.1 = ₹121",tip:"10% growth means ×1.10."}
 ];
-const LEVELS=["All Levels","Foundation","Fast Arithmetic","Basic Multiplication","Multiplication","Division","Fractions & Percentages","Ratio & Proportion","Class 6–7","Class 7–8","Class 8–10"];
+const LEVELS=[
+  "All Levels",
+  "Foundation",
+  "Fast Arithmetic",
+  "Basic Multiplication",
+  "Multiplication",
+  "Division",
+  "Fractions & Percentages",
+  "Ratio & Proportion",
+  "Class 6–7",
+  "Class 7–8",
+  "Class 8–10"
+];
 
-const ICONS={"All Levels":"🌟","Foundation":"🌱","Fast Arithmetic":"⚡","Basic Multiplication":"🔢","Multiplication":"✖️","Division":"➗","Fractions & Percentages":"🍰","Ratio & Proportion":"⚖️","Class 6–7":"🚀","Class 7–8":"🧠","Class 8–10":"🏆"};
+const ICONS={
+  "All Levels":"🌟",
+  "Foundation":"🌱",
+  "Fast Arithmetic":"⚡",
+  "Basic Multiplication":"🔢",
+  "Multiplication":"✖️",
+  "Division":"➗",
+  "Fractions & Percentages":"🍰",
+  "Ratio & Proportion":"⚖️",
+  "Class 6–7":"🚀",
+  "Class 7–8":"🧠",
+  "Class 8–10":"🏆"
+};
 let level=localStorage.getItem("mmLevel")||"All Levels";
 let id=localStorage.getItem("mmTrick")||TRICKS[0].id;
 let qi=0,score=0,locked=false,questions=[];
