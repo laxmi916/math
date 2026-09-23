@@ -619,6 +619,12 @@ const TRICKS=[
 {id:"ltr",icon:"➡️",name:"Left-to-Right Addition",level:"Fast Arithmetic",desc:"Add the largest place values first.",example:"347 + 125 = 400 + 60 + 12 = 472",tip:"Keep a running total."},
 {id:"half",icon:"✂️",name:"Halving",level:"Fast Arithmetic",desc:"Find half quickly, often to support ×5 or percentages.",example:"Half of 86 = 43",tip:"Split even numbers into two equal parts."},
 
+{id:"basic_x1",icon:"✖️1️⃣",name:"Single Digit × Single Digit",level:"Basic Multiplication",desc:"Multiply two single-digit numbers.",example:"7 × 6 = 42",tip:"Learn and use multiplication facts."},
+{id:"basic_x2",icon:"🔢✖️1️⃣",name:"Two Digit × One Digit",level:"Basic Multiplication",desc:"Multiply a two-digit number by a single digit.",example:"24 × 3 = 72",tip:"Multiply ones first, then tens."},
+{id:"basic_x3",icon:"🔢✖️1️⃣",name:"Three Digit × One Digit",level:"Basic Multiplication",desc:"Multiply a three-digit number by a single digit.",example:"124 × 3 = 372",tip:"Multiply from right to left and carry when needed."},
+{id:"basic_x4",icon:"🔢✖️🔢",name:"Two Digit × Two Digit",level:"Basic Multiplication",desc:"Multiply two two-digit numbers.",example:"24 × 13 = 312",tip:"Multiply by ones, then tens, and add."},
+{id:"basic_x5",icon:"🔢✖️🔢",name:"Three Digit × Two Digit",level:"Basic Multiplication",desc:"Multiply a three-digit number by a two-digit number.",example:"124 × 23 = 2852",tip:"Multiply by each digit and add the partial products."},
+{id:"basic_x6",icon:"🔢✖️🔢",name:"Three Digit × Three Digit",level:"Basic Multiplication",desc:"Multiply two three-digit numbers.",example:"123 × 234 = 28782",tip:"Work carefully with place values and partial products."},  
 {id:"x2",icon:"✖️2️⃣",name:"×2",level:"Multiplication",desc:"Double the number.",example:"27 × 2 = 54",tip:"×2 means double."},
 {id:"x4",icon:"✖️4️⃣",name:"×4",level:"Multiplication",desc:"Double twice.",example:"18 × 4 = 36 × 2 = 72",tip:"×4 = double, then double again."},
 {id:"x5",icon:"✖️5️⃣",name:"×5",level:"Multiplication",desc:"Multiply by 10 and halve.",example:"24 × 5 = 240 ÷ 2 = 120",tip:"×5 = ×10 ÷2."},
@@ -814,6 +820,13 @@ case"subparts": { const a=rand(40,90); const b=rand(11,a-10); const ans=a-b; ret
   case"ltr": a=rand(100,600);b=rand(100,300);ans=a+b;text=`${a} + ${b} = ?`;break;
   case"half": a=rand(10,100)*2;ans=a/2;text=`Half of ${a} = ?`;break;
 
+
+  case"basic_x1": a=rand(2,9);b=rand(2,9);ans=a*b;text=`${a} × ${b} = ?`;break;
+  case"basic_x2": a=rand(10,99);b=rand(2,9);ans=a*b;text=`${a} × ${b} = ?`;break;
+  case"basic_x3": a=rand(100,999);b=rand(2,9);ans=a*b;text=`${a} × ${b} = ?`;break;
+  case"basic_x4": a=rand(10,99);b=rand(10,99);ans=a*b;text=`${a} × ${b} = ?`;break;
+  case"basic_x5": a=rand(100,999);b=rand(10,99);ans=a*b;text=`${a} × ${b} = ?`;break;
+  case"basic_x6": a=rand(100,999);b=rand(100,999);ans=a*b;text=`${a} × ${b} = ?`;break;
   case"x2": a=rand(5,60);ans=a*2;text=`${a} × 2 = ?`;break;
   case"x4": a=rand(5,40);ans=a*4;text=`${a} × 4 = ?`;break;
   case"x5": a=rand(5,60);ans=a*5;text=`${a} × 5 = ?`;break;
