@@ -545,6 +545,30 @@ details.item summary{
   .question{font-size:27px}
   .answer{font-size:17px}
 }
+
+.selected-table{margin-top:18px;padding:14px;border-radius:18px;background:var(--card,#fff);border:1px solid rgba(0,0,0,.07)}
+.selected-table-title{text-align:center;font-size:24px;font-weight:900;margin-bottom:12px}
+.selected-table .table-list{display:grid;gap:7px;margin-top:8px}
+.selected-table .table-row{display:flex;align-items:center;justify-content:center;border-radius:12px;padding:9px;background:var(--card2,#f3f6ff);font-size:19px;font-weight:800}
+ .selected-table .table-row b{margin:0 8px}
+.show-table-btn{display:block;margin:16px auto 0;border:0;border-radius:14px;padding:11px 18px;background:var(--primary,#4f46e5);color:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.show-table-btn:hover{transform:translateY(-1px)}
+
+/* ---------- Multiplication Table Page ---------- */
+.table-picker{margin-top:14px;display:none;grid-template-columns:repeat(4,1fr);gap:10px}
+.table-picker.show{display:grid}
+.table-number{border:0;border-radius:16px;padding:14px 8px;background:var(--card2,#f3f6ff);font-size:18px;font-weight:800;cursor:pointer;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.table-number:hover{transform:translateY(-2px)}
+.table-page{display:none}
+.table-page.active{display:block}
+.table-page .back-btn{border:0;background:transparent;font-weight:800;cursor:pointer;font-size:14px;padding:4px 0 12px}
+.table-title{text-align:center;font-size:28px;font-weight:900;margin:4px 0 16px}
+.table-list{display:grid;gap:9px;margin-top:12px}
+.table-row{display:flex;align-items:center;justify-content:center;border-radius:14px;padding:11px;background:var(--card2,#f3f6ff);font-size:20px;font-weight:800}
+.table-row b{margin:0 8px}
+.table-practice{width:100%;margin-top:16px}
+@media(max-width:520px){.table-picker{grid-template-columns:repeat(3,1fr)}.table-number{padding:13px 5px}}
+
 </style>
 
 </head>
@@ -625,6 +649,25 @@ const TRICKS=[
 {id:"basic_x4",icon:"🔢✖️🔢",name:"Two Digit × Two Digit",level:"Basic Multiplication",desc:"Multiply two two-digit numbers.",example:"24 × 13 = 312",tip:"Multiply by ones, then tens, and add."},
 {id:"basic_x5",icon:"🔢✖️🔢",name:"Three Digit × Two Digit",level:"Basic Multiplication",desc:"Multiply a three-digit number by a two-digit number.",example:"124 × 23 = 2852",tip:"Multiply by each digit and add the partial products."},
 {id:"basic_x6",icon:"🔢✖️🔢",name:"Three Digit × Three Digit",level:"Basic Multiplication",desc:"Multiply two three-digit numbers.",example:"123 × 234 = 28782",tip:"Work carefully with place values and partial products."},  
+{id:"table2",icon:"📚2",name:"2 Times Table",level:"Multiplication Tables",desc:"Practice the 2 times table.",example:"2 × 7 = 14",tip:"Practice multiplying by 1 through 10."},
+{id:"table3",icon:"📚3",name:"3 Times Table",level:"Multiplication Tables",desc:"Practice the 3 times table.",example:"3 × 7 = 21",tip:"Practice multiplying by 1 through 10."},
+{id:"table4",icon:"📚4",name:"4 Times Table",level:"Multiplication Tables",desc:"Practice the 4 times table.",example:"4 × 7 = 28",tip:"Practice multiplying by 1 through 10."},
+{id:"table5",icon:"📚5",name:"5 Times Table",level:"Multiplication Tables",desc:"Practice the 5 times table.",example:"5 × 7 = 35",tip:"Practice multiplying by 1 through 10."},
+{id:"table6",icon:"📚6",name:"6 Times Table",level:"Multiplication Tables",desc:"Practice the 6 times table.",example:"6 × 7 = 42",tip:"Practice multiplying by 1 through 10."},
+{id:"table7",icon:"📚7",name:"7 Times Table",level:"Multiplication Tables",desc:"Practice the 7 times table.",example:"7 × 7 = 49",tip:"Practice multiplying by 1 through 10."},
+{id:"table8",icon:"📚8",name:"8 Times Table",level:"Multiplication Tables",desc:"Practice the 8 times table.",example:"8 × 7 = 56",tip:"Practice multiplying by 1 through 10."},
+{id:"table9",icon:"📚9",name:"9 Times Table",level:"Multiplication Tables",desc:"Practice the 9 times table.",example:"9 × 7 = 63",tip:"Practice multiplying by 1 through 10."},
+{id:"table10",icon:"📚10",name:"10 Times Table",level:"Multiplication Tables",desc:"Practice the 10 times table.",example:"10 × 7 = 70",tip:"Practice multiplying by 1 through 10."},
+{id:"table11",icon:"📚11",name:"11 Times Table",level:"Multiplication Tables",desc:"Practice the 11 times table.",example:"11 × 7 = 77",tip:"Practice multiplying by 1 through 10."},
+{id:"table12",icon:"📚12",name:"12 Times Table",level:"Multiplication Tables",desc:"Practice the 12 times table.",example:"12 × 7 = 84",tip:"Practice multiplying by 1 through 10."},
+{id:"table13",icon:"📚13",name:"13 Times Table",level:"Multiplication Tables",desc:"Practice the 13 times table.",example:"13 × 7 = 91",tip:"Practice multiplying by 1 through 10."},
+{id:"table14",icon:"📚14",name:"14 Times Table",level:"Multiplication Tables",desc:"Practice the 14 times table.",example:"14 × 7 = 98",tip:"Practice multiplying by 1 through 10."},
+{id:"table15",icon:"📚15",name:"15 Times Table",level:"Multiplication Tables",desc:"Practice the 15 times table.",example:"15 × 7 = 105",tip:"Practice multiplying by 1 through 10."},
+{id:"table16",icon:"📚16",name:"16 Times Table",level:"Multiplication Tables",desc:"Practice the 16 times table.",example:"16 × 7 = 112",tip:"Practice multiplying by 1 through 10."},
+{id:"table17",icon:"📚17",name:"17 Times Table",level:"Multiplication Tables",desc:"Practice the 17 times table.",example:"17 × 7 = 119",tip:"Practice multiplying by 1 through 10."},
+{id:"table18",icon:"📚18",name:"18 Times Table",level:"Multiplication Tables",desc:"Practice the 18 times table.",example:"18 × 7 = 126",tip:"Practice multiplying by 1 through 10."},
+{id:"table19",icon:"📚19",name:"19 Times Table",level:"Multiplication Tables",desc:"Practice the 19 times table.",example:"19 × 7 = 133",tip:"Practice multiplying by 1 through 10."},
+{id:"table20",icon:"📚20",name:"20 Times Table",level:"Multiplication Tables",desc:"Practice the 20 times table.",example:"20 × 7 = 140",tip:"Practice multiplying by 1 through 10."},
 {id:"x2",icon:"✖️2️⃣",name:"×2",level:"Multiplication",desc:"Double the number.",example:"27 × 2 = 54",tip:"×2 means double."},
 {id:"x4",icon:"✖️4️⃣",name:"×4",level:"Multiplication",desc:"Double twice.",example:"18 × 4 = 36 × 2 = 72",tip:"×4 = double, then double again."},
 {id:"x5",icon:"✖️5️⃣",name:"×5",level:"Multiplication",desc:"Multiply by 10 and halve.",example:"24 × 5 = 240 ÷ 2 = 120",tip:"×5 = ×10 ÷2."},
@@ -683,33 +726,9 @@ const TRICKS=[
 {id:"discount",icon:"🏷️",name:"Discount",level:"Class 8–10",desc:"Discount amount = marked price × discount rate.",example:"20% off ₹500 = ₹100 discount",tip:"Final price = 80% of ₹500 = ₹400."},
 {id:"compound",icon:"📈",name:"Compound Growth",level:"Class 8–10",desc:"Repeated percentage growth multiplies by the growth factor.",example:"₹100 ×1.1×1.1 = ₹121",tip:"10% growth means ×1.10."}
 ];
-const LEVELS=[
-  "All Levels",
-  "Foundation",
-  "Fast Arithmetic",
-  "Basic Multiplication",
-  "Multiplication",
-  "Division",
-  "Fractions & Percentages",
-  "Ratio & Proportion",
-  "Class 6–7",
-  "Class 7–8",
-  "Class 8–10"
-];
+const LEVELS=["All Levels","Foundation","Fast Arithmetic","Basic Multiplication","Multiplication Tables","Multiplication","Division","Fractions & Percentages","Ratio & Proportion","Class 6–7","Class 7–8","Class 8–10"];
+const ICONS={"All Levels":"🌟","Foundation":"🌱","Fast Arithmetic":"⚡","Basic Multiplication":"🔢","Multiplication Tables":"📚","Multiplication":"✖️","Division":"➗","Fractions & Percentages":"🍰","Ratio & Proportion":"⚖️","Class 6–7":"🚀","Class 7–8":"🧠","Class 8–10":"🏆"};
 
-const ICONS={
-  "All Levels":"🌟",
-  "Foundation":"🌱",
-  "Fast Arithmetic":"⚡",
-  "Basic Multiplication":"🔢",
-  "Multiplication":"✖️",
-  "Division":"➗",
-  "Fractions & Percentages":"🍰",
-  "Ratio & Proportion":"⚖️",
-  "Class 6–7":"🚀",
-  "Class 7–8":"🧠",
-  "Class 8–10":"🏆"
-};
 let level=localStorage.getItem("mmLevel")||"All Levels";
 let id=localStorage.getItem("mmTrick")||TRICKS[0].id;
 let qi=0,score=0,locked=false,questions=[];
@@ -764,6 +783,7 @@ function chooseLevel(x){
  start();
 }
 
+
 function renderTrick(){
  const s=$("trick");
  const list=level==="All Levels"?TRICKS:TRICKS.filter(t=>t.level===level);
@@ -784,13 +804,39 @@ function renderTrick(){
 
 function renderInfo(){
  const t=current();
+ let tableButton="";
+
+ // Multiplication tables are regular tricks. The table is hidden initially
+ // and can be shown/hidden by clicking the button.
+ if(t.id && t.id.startsWith("table")){
+   const n=Number(t.id.replace("table",""));
+   let rows="";
+   for(let i=1;i<=10;i++){
+     rows += `<div class="table-row"><span>${n}</span><b>×</b><span>${i}</span><b>=</b><span>${n*i}</span></div>`;
+   }
+   tableButton=`<button class="show-table-btn" onclick="toggleTable('${t.id}', this)">📚 Show Table</button>
+   <div id="tableView-${t.id}" class="selected-table" style="display:none">
+     <div class="selected-table-title">📚 ${n} Times Table</div>
+     <div class="table-list">${rows}</div>
+   </div>`;
+ }
+
  $("info").innerHTML=`<div class="trickinfo">
  <span class="badge">${t.level}</span>
  <div class="tname">${t.icon} ${t.name}</div>
  <div>${t.desc}</div>
  <div class="example">💡 ${t.example}</div>
  <div class="tip">⭐ ${t.tip}</div>
+ ${tableButton}
  </div>`;
+}
+
+function toggleTable(id, btn){
+ const box=$("tableView-"+id);
+ if(!box) return;
+ const hidden=box.style.display==="none";
+ box.style.display=hidden ? "block" : "none";
+ btn.textContent=hidden ? "📕 Hide Table" : "📚 Show Table";
 }
 
 /* ---------- Question generator ---------- */
@@ -851,6 +897,25 @@ case"subparts": { const a=rand(40,90); const b=rand(11,a-10); const ans=a-b; ret
   case"basic_x4": a=rand(10,99);b=rand(10,99);ans=a*b;text=`${a} × ${b} = ?`;break;
   case"basic_x5": a=rand(100,999);b=rand(10,99);ans=a*b;text=`${a} × ${b} = ?`;break;
   case"basic_x6": a=rand(100,999);b=rand(100,999);ans=a*b;text=`${a} × ${b} = ?`;break;
+  case"table2": b=rand(1,10);ans=2*b;text=`2 × ${b} = ?`;break;
+  case"table3": b=rand(1,10);ans=3*b;text=`3 × ${b} = ?`;break;
+  case"table4": b=rand(1,10);ans=4*b;text=`4 × ${b} = ?`;break;
+  case"table5": b=rand(1,10);ans=5*b;text=`5 × ${b} = ?`;break;
+  case"table6": b=rand(1,10);ans=6*b;text=`6 × ${b} = ?`;break;
+  case"table7": b=rand(1,10);ans=7*b;text=`7 × ${b} = ?`;break;
+  case"table8": b=rand(1,10);ans=8*b;text=`8 × ${b} = ?`;break;
+  case"table9": b=rand(1,10);ans=9*b;text=`9 × ${b} = ?`;break;
+  case"table10": b=rand(1,10);ans=10*b;text=`10 × ${b} = ?`;break;
+  case"table11": b=rand(1,10);ans=11*b;text=`11 × ${b} = ?`;break;
+  case"table12": b=rand(1,10);ans=12*b;text=`12 × ${b} = ?`;break;
+  case"table13": b=rand(1,10);ans=13*b;text=`13 × ${b} = ?`;break;
+  case"table14": b=rand(1,10);ans=14*b;text=`14 × ${b} = ?`;break;
+  case"table15": b=rand(1,10);ans=15*b;text=`15 × ${b} = ?`;break;
+  case"table16": b=rand(1,10);ans=16*b;text=`16 × ${b} = ?`;break;
+  case"table17": b=rand(1,10);ans=17*b;text=`17 × ${b} = ?`;break;
+  case"table18": b=rand(1,10);ans=18*b;text=`18 × ${b} = ?`;break;
+  case"table19": b=rand(1,10);ans=19*b;text=`19 × ${b} = ?`;break;
+  case"table20": b=rand(1,10);ans=20*b;text=`20 × ${b} = ?`;break;
   case"x2": a=rand(5,60);ans=a*2;text=`${a} × 2 = ?`;break;
   case"x4": a=rand(5,40);ans=a*4;text=`${a} × 4 = ?`;break;
   case"x5": a=rand(5,60);ans=a*5;text=`${a} × 5 = ?`;break;
