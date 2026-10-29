@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Word Problems — Learn and Practise</title>
+<style>
+:root{
+ --ink:#192744;--muted:#65728a;--primary:#4169e1;--primary-dark:#294fc0;
+ --purple:#7652c8;--teal:#0b9297;--bg:#eef2fb;--surface:#fff;
+ --line:#dce4f2;--soft:#f5f7ff;--good:#167647;--bad:#c03936;
+ --shadow:0 14px 40px rgba(35,55,100,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eaf0ff 0,#f6f8fd 300px,#f6f8fd 100%);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
+header{position:relative;overflow:hidden;padding:30px 18px 34px;text-align:center;color:white;background:linear-gradient(125deg,#315bd5 0%,#6748c5 58%,#8050c8 100%)}
+header:before,header:after{content:"";position:absolute;border-radius:50%;background:#ffffff12;pointer-events:none}
+header:before{width:240px;height:240px;top:-150px;left:8%}header:after{width:310px;height:310px;right:4%;bottom:-250px}
+header h1{position:relative;margin:0;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:850;letter-spacing:-.6px}
+header p{position:relative;margin:7px auto 0;max-width:680px;color:#eef1ff;font-size:1rem}
+main{width:min(920px,100%);margin:24px auto;padding:0 18px 44px}
+.tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 20px}
+.tab,button{border:0;border-radius:12px;padding:11px 17px;font:inherit;font-weight:750;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+button:hover,.tab:hover{transform:translateY(-1px)}
+button:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ffbf47;outline-offset:3px}
+.tab{background:#e4eafa;color:#354361;box-shadow:0 2px 5px #20386b08}
+.tab.active{background:var(--primary);color:white;box-shadow:0 6px 15px #4169e13b}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--surface);border:1px solid #e1e7f2;border-radius:22px;padding:clamp(19px,3.5vw,32px);margin-bottom:18px;box-shadow:var(--shadow)}
+h2{margin:0 0 10px;font-size:clamp(1.35rem,3vw,1.65rem);line-height:1.3;letter-spacing:-.3px}
+h3{margin:15px 0 6px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+.concept{background:#f3f6ff;border:1px solid #e1e8ff;border-radius:15px;padding:17px}
+.concept.green{background:#effafa;border-color:#d0eeee}
+.example{margin:12px 0;padding:12px 15px;border-left:5px solid #e8a317;background:#fff8e7;border-radius:8px}
+.math{font-size:1.22rem;font-weight:800}
+.steps li{margin:5px 0}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row label{font-weight:750}
+.row select,.row input,.answer{padding:12px 14px;border:1px solid #cbd5e7;border-radius:12px;font:inherit;background:#fff;color:var(--ink)}
+.row select{min-height:46px}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 4px 10px #4169e125}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-teal{background:var(--teal);color:white;box-shadow:0 4px 10px #0b92971f}
+.btn-purple{background:var(--purple);color:white}
+.btn-light{background:#edf1fa;color:#2b3a58}
+.problem-stage{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;min-height:0;padding:24px 0 12px}
+.problem-meta{display:flex;justify-content:flex-start;gap:10px;flex-wrap:wrap;color:#5e6c88;font-size:.9rem;font-weight:750}
+.problem-meta span{display:inline-flex;align-items:center;background:#eef2ff;color:#3c56a5;border-radius:999px;padding:5px 12px}
+.problem-text{font-size:clamp(1.2rem,2.6vw,1.65rem);font-weight:750;line-height:1.5;margin:18px 0 24px;max-width:100%;color:#1e2c49}
+.answer{font-size:1.08rem;width:min(100%,290px);border:2px solid #d4ddef;background:#fbfcff}
+.answer:focus,.row input:focus,.row select:focus{border-color:var(--primary);outline:3px solid #4169e11c}
+.feedback{font-weight:750;min-height:26px;margin-top:12px}
+.good{color:var(--good)}.bad{color:var(--bad)}
+.explanation{margin-top:12px;background:#effaf5;border:1px solid #ccebd9;border-radius:14px;padding:15px 17px;color:#20573b}
+.hidden{display:none!important}
+.progress{height:8px;background:#e4eaf5;border-radius:99px;overflow:hidden;margin:17px 0 6px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4169e1,#17a6a0);border-radius:99px;transition:width .25s}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.stats span{background:#f2f5fb;border:1px solid #e7ecf5;padding:8px 13px;border-radius:11px;color:#53617b}
+.stats b{color:var(--ink)}
+#problemText{max-width:780px}
+#answerInput{min-height:48px}
+@media(min-width:700px){
+ .problem-stage{padding:27px 10px 14px}
+ #problemText{max-width:790px}
+}
+@media(orientation:landscape) and (min-width:650px){
+ main{width:min(960px,100%)}
+ .bank-card{min-height:0}
+ .problem-stage{min-height:0;padding-top:24px}
+}
+@media(max-width:560px){
+ header{padding:24px 15px 27px}
+ main{padding:0 12px 30px;margin:16px auto}
+ .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:14px}
+ .tab{padding:10px 5px;font-size:.92rem}
+ .card{padding:17px;border-radius:18px}
+ .row{gap:8px}
+ .row select{width:100%}
+ .problem-stage{padding-top:19px}
+ .problem-text{margin:15px 0 21px;font-size:1.22rem}
+ .answer{width:100%}
+ .row:has(#answerInput){align-items:stretch;flex-direction:column}
+ .row:has(#answerInput) label{margin-bottom:-5px}
+ #checkAnswer,#explainAnswer,#nextProblem{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<header><h1>Math Word Problems</h1><p>Learn addition, subtraction, multiplication and division. Practise one real-life word problem at a time.</p></header>
+<main>
+<nav class="tabs" aria-label="Sections">
+<button class="tab active" data-panel="learn">Learn</button>
+<button class="tab" data-panel="bank">Practice Problems</button>
+<button class="tab" data-panel="quiz">Quiz</button>
+</nav>
+
+<section id="learn" class="panel active">
+<div class="card">
+<h2>Addition — putting amounts together</h2>
+<p>Use addition when two or more amounts are joined to find the total.</p>
+<div class="concept"><b>Word problem:</b> Anu has 12 crayons. Her friend gives her 8 more crayons. How many crayons does Anu have now?<p class="math">12 + 8 = 20</p><b>Answer:</b> Anu has 20 crayons.</div>
+</div>
+<div class="card">
+<h2>Subtraction — taking away or finding the difference</h2>
+<p>Use subtraction when an amount is taken away or when you need to find how many more or fewer.</p>
+<div class="concept"><b>Word problem:</b> A shop has 35 balloons. It sells 9 balloons. How many balloons are left?<p class="math">35 − 9 = 26</p><b>Answer:</b> There are 26 balloons left.</div>
+</div>
+<div class="card">
+<h2>Multiplication — equal groups</h2>
+<p>Multiplication is a quick way to add equal groups. Find the number of groups and the number in each group.</p>
+<div class="concept"><b>Word problem:</b> There are 4 trays with 6 cupcakes on each tray. How many cupcakes are there altogether?<p class="math">6 + 6 + 6 + 6 = 24</p><p class="math">4 × 6 = 24</p><b>Answer:</b> There are 24 cupcakes.</div>
+<div class="example"><b>Tip:</b> Phrases such as “each”, “every”, and “equal groups” may suggest multiplication. Read the whole story before choosing.</div>
+</div>
+<div class="card">
+<h2>Division — sharing equally or making groups</h2>
+<p>Division finds how much each group receives or how many equal groups can be made.</p>
+<div class="grid">
+<div class="concept green"><b>Sharing equally</b><p>18 biscuits are shared equally among 3 children. How many does each child get?</p><p class="math">18 ÷ 3 = 6</p><b>Answer:</b> 6 biscuits each.</div>
+<div class="concept green"><b>Making groups</b><p>There are 24 pencils. Each box holds 6 pencils. How many boxes are needed?</p><p class="math">24 ÷ 6 = 4</p><b>Answer:</b> 4 boxes.</div>
+</div>
+<div class="example"><b>Connection:</b> Multiplication and division undo each other. Since 4 × 6 = 24, then 24 ÷ 6 = 4 and 24 ÷ 4 = 6.</div>
+</div>
+<div class="card"><h2>How to solve any word problem</h2><ol class="steps"><li>Read the story carefully.</li><li>Identify what you know and what you need to find.</li><li>Choose addition, subtraction, multiplication or division.</li><li>Write the number sentence and calculate.</li><li>Check that your answer makes sense and include the unit.</li></ol><button class="btn-primary" onclick="document.querySelector('[data-panel=bank]').click()">Start practising</button></div>
+</section>
+
+<section id="bank" class="panel">
+<div class="card bank-card">
+<h2>Practice Problems</h2>
+<p class="muted">Practise with fresh word problems. Choose the operations, solve each question, and reveal a step-by-step explanation whenever you need help.</p>
+<div class="row">
+<label for="bankType">Problem type</label>
+<select id="bankType"><option value="addsub">Addition / Subtraction</option><option value="divmul">Division / Multiplication</option><option value="mixed">Mixed (all four operations)</option></select>
+<button id="resetBank" class="btn-light">Start new set</button>
+</div>
+<div class="progress"><span id="bankProgress"></span></div>
+<div class="problem-stage">
+<div class="problem-meta"><span id="problemNumber">Question 1</span></div>
+<div id="problemText" class="problem-text">Preparing your first problem…</div>
+<div class="row"><label for="answerInput">Your answer</label><input class="answer" id="answerInput" type="number" inputmode="numeric" placeholder="Enter answer"></div>
+<div class="row" style="margin-top:14px">
+<button id="checkAnswer" class="btn-primary">Check answer</button>
+<button id="explainAnswer" class="btn-light">Show explanation</button>
+<button id="nextProblem" class="btn-teal">Next problem →</button>
+</div>
+<div id="answerFeedback" class="feedback" role="status" aria-live="polite"></div>
+<div id="answerExplanation" class="explanation hidden"></div>
+</div>
+<div class="stats"><span>Problems attempted: <b id="attempted">0</b></span><span>Correct: <b id="correct">0</b></span></div>
+</div>
+</section>
+
+<section id="quiz" class="panel">
+<div class="card"><h2>Quick quiz</h2><p>Take a short quiz using the same word-problem generator.</p>
+<div class="row"><label for="quizType">Questions</label><select id="quizType"><option value="10">10</option><option value="20">20</option><option value="25">25</option></select><button id="startQuiz" class="btn-purple">Start quiz</button></div>
+<div id="quizArea" class="hidden"><div class="stats"><span id="quizCount">Question 1</span><span>Score: <b id="quizScore">0</b></span></div><div class="progress"><span id="quizProgress"></span></div><div id="quizText" class="problem-text"></div><div class="row"><label for="quizAnswer">Your answer</label><input id="quizAnswer" class="answer" type="number" inputmode="numeric"></div><div class="row" style="margin-top:12px"><button id="quizCheck" class="btn-primary">Check</button><button id="quizNext" class="btn-teal hidden">Next →</button></div><div id="quizFeedback" class="feedback"></div><div id="quizExplain" class="explanation hidden"></div></div><div id="quizResult"></div>
+</div></section>
+</main>
+<script>
+(() => {
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.panel));}));
+
+// Build many coherent word-problem variations from operation-specific
+// story structures and suitable everyday objects. Avoid mixing unrelated
+// locations (such as shelves) with people or other unsuitable nouns.
+// Each story uses nouns and settings that make sense together.
+// For example, people are grouped into teams, while objects go into boxes,
+// packets, bags, trays or rows. No generic noun is inserted into an unsuitable setting.
+const mulBaseFrames=[
+(a,b)=>`A shop packs ${a} boxes with ${b} marbles in each box. How many marbles are packed altogether?`,
+(a,b)=>`A farmer plants ${a} rows of carrots, with ${b} plants in each row. How many carrot plants are there?`,
+(a,b)=>`A classroom has ${a} tables with ${b} books on each table. How many books are there altogether?`,
+(a,b)=>`A baker fills ${a} trays with ${b} muffins on each tray. How many muffins are there?`,
+(a,b)=>`A bus makes ${a} trips and carries ${b} passengers on each trip. How many passenger journeys are made?`,
+(a,b)=>`A child saves ${b} rupees each week for ${a} weeks. How much money is saved?`,
+(a,b)=>`A coach forms ${a} teams with ${b} players on each team. How many players are there?`,
+(a,b)=>`A shop displays ${a} shelves with ${b} toys on each shelf. How many toys are displayed?`,
+(a,b)=>`A gardener plants ${a} flower beds with ${b} flowers in each bed. How many flowers are planted?`,
+(a,b)=>`A teacher gives each of ${a} students ${b} pencils. How many pencils are given out?`,
+(a,b)=>`A cinema has ${a} rows with ${b} seats in each row. How many seats are there?`,
+(a,b)=>`A fruit seller puts ${b} apples into each of ${a} baskets. How many apples are in the baskets?`,
+(a,b)=>`A factory makes ${a} batches of biscuits, with ${b} biscuits in each batch. How many biscuits are made?`,
+(a,b)=>`A library orders ${a} packs of labels, with ${b} labels in each pack. How many labels are ordered?`,
+(a,b)=>`A party has ${a} tables with ${b} cups on each table. How many cups are needed?`,
+(a,b)=>`A school buys ${a} cartons of chalk, with ${b} pieces of chalk in each carton. How many pieces are bought?`,
+(a,b)=>`A baker puts ${b} cookies into each of ${a} gift bags. How many cookies are packed?`,
+(a,b)=>`A gardener plants ${a} rows of trees, with ${b} trees in each row. How many trees are planted?`,
+(a,b)=>`A shop receives ${a} packets of stickers, with ${b} stickers in each packet. How many stickers arrive?`,
+(a,b)=>`A sports club gives ${b} water bottles to each of ${a} players. How many bottles are needed?`
+,
+(a,b)=>`A school buys ${a} packets of crayons, with ${b} crayons in each packet. How many crayons are bought?`,
+(a,b)=>`A florist makes ${a} rows of flower pots, with ${b} pots in each row. How many flower pots are there?`,
+(a,b)=>`A game shop puts ${b} cards into each of ${a} packs. How many cards are packed?`,
+(a,b)=>`A café sets ${a} tables with ${b} plates on each table. How many plates are set out?`,
+(a,b)=>`A delivery driver drops off ${a} crates with ${b} bottles in each crate. How many bottles are delivered?`,
+(a,b)=>`A music teacher gives ${b} worksheets to each of ${a} students. How many worksheets are given out?`,
+(a,b)=>`A gardener plants ${b} seedlings in each of ${a} pots. How many seedlings are planted?`,
+(a,b)=>`A craft club makes ${a} bracelets using ${b} beads for each bracelet. How many beads are used?`,
+(a,b)=>`A theatre has ${a} sections with ${b} seats in each section. How many seats are there?`,
+(a,b)=>`A supermarket stacks ${a} crates with ${b} juice cartons in each crate. How many juice cartons are stacked?`,
+(a,b)=>`A school prepares ${a} gift packs with ${b} pencils in each pack. How many pencils are packed?`,
+(a,b)=>`A baker decorates ${a} cakes with ${b} cherries on each cake. How many cherries are used?`,
+(a,b)=>`A toy maker builds ${a} model cars and puts ${b} wheels on each car. How many wheels are needed?`,
+(a,b)=>`A sports shop displays ${a} racks with ${b} footballs on each rack. How many footballs are displayed?`,
+(a,b)=>`A farmer fills ${a} baskets with ${b} tomatoes in each basket. How many tomatoes are collected?`,
+(a,b)=>`A school arranges ${a} rows of desks, with ${b} desks in each row. How many desks are arranged?`,
+(a,b)=>`A stationery shop makes ${a} bundles with ${b} notebooks in each bundle. How many notebooks are in the bundles?`,
+(a,b)=>`A picnic group prepares ${a} bags with ${b} sandwiches in each bag. How many sandwiches are prepared?`,
+(a,b)=>`A tailor sews ${a} costumes and attaches ${b} buttons to each costume. How many buttons are used?`,
+(a,b)=>`A warehouse loads ${a} trolleys with ${b} parcels on each trolley. How many parcels are loaded?`,
+(a,b)=>`A class makes ${a} paper chains using ${b} paper links in each chain. How many links are used?`,
+(a,b)=>`A shop arranges ${a} display stands with ${b} greeting cards on each stand. How many cards are displayed?`,
+(a,b)=>`A farmer plants ${a} plots with ${b} tomato plants in each plot. How many tomato plants are there?`,
+(a,b)=>`A camp gives ${b} snack bars to each of ${a} campers. How many snack bars are needed?`,
+(a,b)=>`A printing shop produces ${a} sets of invitations with ${b} invitations in each set. How many invitations are printed?`,
+(a,b)=>`A pet shop prepares ${a} tanks with ${b} fish in each tank. How many fish are in the tanks?`,
+(a,b)=>`A school has ${a} classes, and each class receives ${b} maps. How many maps are distributed?`,
+(a,b)=>`A fruit stall places ${b} pears in each of ${a} trays. How many pears are on the trays?`,
+(a,b)=>`A dance group performs ${a} shows with ${b} dancers in each show. How many dancer-performances are there?`,
+(a,b)=>`A craft store sells ${a} kits, each containing ${b} buttons. How many buttons are in all the kits?`
+];
+const divBaseFrames=[
+(t,g)=>`${t} pencils are shared equally among ${g} students. How many pencils does each student receive?`,
+(t,g)=>`A shop packs ${t} apples into bags with ${g} apples in each bag. How many bags are needed?`,
+(t,g)=>`${t} children are arranged into teams of ${g} children. How many teams are formed?`,
+(t,g)=>`A ribbon ${t} centimetres long is cut into pieces of ${g} centimetres. How many pieces are made?`,
+(t,g)=>`${t} biscuits are shared equally among ${g} children. How many biscuits does each child receive?`,
+(t,g)=>`A librarian places ${t} books equally on ${g} shelves. How many books are on each shelf?`,
+(t,g)=>`${t} flowers are arranged into bunches of ${g} flowers. How many bunches are made?`,
+(t,g)=>`${t} students travel in vans that carry ${g} students each. How many vans are needed?`,
+(t,g)=>`A shop packs ${t} oranges into cartons holding ${g} oranges each. How many cartons are filled?`,
+(t,g)=>`${t} cookies are shared equally among ${g} friends. How many cookies does each friend receive?`,
+(t,g)=>`A teacher shares ${t} crayons equally among ${g} children. How many crayons does each child get?`,
+(t,g)=>`A florist makes bouquets using ${g} flowers per bouquet. If there are ${t} flowers, how many bouquets can be made?`,
+(t,g)=>`A warehouse places ${t} bottles into crates with ${g} bottles in each crate. How many crates are filled?`,
+(t,g)=>`${t} players are divided into teams of ${g} players. How many teams are there?`,
+(t,g)=>`A baker puts ${t} cupcakes into boxes, with ${g} cupcakes per box. How many boxes are needed?`,
+(t,g)=>`${t} stickers are shared equally among ${g} children. How many stickers does each child get?`,
+(t,g)=>`A school has ${t} chairs and arranges ${g} chairs in each row. How many full rows can be made?`,
+(t,g)=>`A farmer gathers ${t} eggs and places ${g} eggs in each carton. How many cartons are needed?`,
+(t,g)=>`${t} books are divided equally among ${g} classrooms. How many books does each classroom receive?`,
+(t,g)=>`A shop puts ${t} pencils into packets of ${g} pencils each. How many packets are made?`
+,
+(t,g)=>`A school has ${t} pencils and puts ${g} pencils into each classroom supply cup. How many full cups can be filled?`,
+(t,g)=>`A baker arranges ${t} rolls on trays with ${g} rolls on each tray. How many trays are filled?`,
+(t,g)=>`A coach has ${t} players and puts ${g} players on each practice group. How many groups are formed?`,
+(t,g)=>`A shop receives ${t} cans and stacks them in columns of ${g} cans. How many columns can be made?`,
+(t,g)=>`A teacher has ${t} worksheets and gives ${g} worksheets to each table group. How many groups receive worksheets?`,
+(t,g)=>`A gardener plants ${t} seedlings in rows of ${g} seedlings. How many rows are planted?`,
+(t,g)=>`A party has ${t} balloons and ties them into bunches of ${g} balloons. How many bunches are made?`,
+(t,g)=>`A bookshop has ${t} notebooks and bundles them in packs of ${g}. How many packs can be made?`,
+(t,g)=>`A canteen prepares ${t} sandwiches and places ${g} sandwiches on each serving tray. How many trays are needed?`,
+(t,g)=>`A delivery worker has ${t} parcels and loads ${g} parcels onto each trolley. How many trolleys are filled?`,
+(t,g)=>`A craft club has ${t} beads and uses ${g} beads for each bracelet. How many bracelets can be made?`,
+(t,g)=>`A farmer collects ${t} tomatoes and packs ${g} tomatoes into each basket. How many baskets are filled?`,
+(t,g)=>`A cinema has ${t} visitors seated in rows of ${g}. How many full rows are occupied?`,
+(t,g)=>`A stationery shop bundles ${t} erasers into packets of ${g}. How many packets are made?`,
+(t,g)=>`A school divides ${t} students into groups of ${g} for an activity. How many groups are formed?`,
+(t,g)=>`A florist has ${t} roses and makes bunches containing ${g} roses each. How many bunches can be made?`,
+(t,g)=>`A warehouse stores ${t} cartons on pallets, with ${g} cartons on each pallet. How many pallets are used?`,
+(t,g)=>`A café has ${t} cups and places ${g} cups on each tray. How many trays are filled?`,
+(t,g)=>`A toy shop packs ${t} toy cars into boxes holding ${g} cars each. How many boxes are filled?`,
+(t,g)=>`A class collected ${t} cans and packs them into bags of ${g} cans. How many bags are needed?`,
+(t,g)=>`A school orders ${t} notebooks and gives ${g} notebooks to each student group. How many groups can receive notebooks?`,
+(t,g)=>`A ribbon of ${t} centimetres is cut into equal pieces of ${g} centimetres. How many pieces are cut?`,
+(t,g)=>`A baker has ${t} cookies and puts ${g} cookies into each packet. How many packets can be filled?`,
+(t,g)=>`A farm gathers ${t} eggs and places ${g} eggs in each tray. How many trays are filled?`,
+(t,g)=>`A team has ${t} players and forms sides of ${g} players each. How many sides can be formed?`,
+(t,g)=>`A library sorts ${t} books into piles of ${g} books. How many piles are made?`,
+(t,g)=>`A shop has ${t} juice boxes and packs ${g} boxes into each cooler. How many coolers are filled?`,
+(t,g)=>`A class has ${t} art sheets and shares ${g} sheets with each project group. How many groups get sheets?`,
+(t,g)=>`A gardener has ${t} flower bulbs and plants ${g} bulbs in each row. How many rows can be planted?`,
+(t,g)=>`A store places ${t} bottles into cases holding ${g} bottles each. How many cases are filled?`
+];
+const addBaseFrames=[
+(a,b)=>`A library receives ${a} storybooks on Monday and ${b} on Tuesday. How many storybooks does it receive altogether?`,
+(a,b)=>`Ravi has ${a} marbles and finds ${b} more. How many marbles does he have now?`,
+(a,b)=>`A farmer picks ${a} mangoes in the morning and ${b} in the afternoon. How many mangoes are picked?`,
+(a,b)=>`There are ${a} boys and ${b} girls at a school event. How many children are there altogether?`,
+(a,b)=>`A shop sells ${a} pencils before lunch and ${b} after lunch. How many pencils are sold?`,
+(a,b)=>`Maya walks ${a} metres in the morning and ${b} metres in the evening. How many metres does she walk altogether?`,
+(a,b)=>`One bus carries ${a} passengers and another carries ${b}. How many passengers are on the two buses?`,
+(a,b)=>`A class collects ${a} cans on Friday and ${b} cans on Saturday. How many cans are collected?`,
+(a,b)=>`A baker makes ${a} buns and then makes ${b} more. How many buns has the baker made?`,
+(a,b)=>`There are ${a} red balloons and ${b} blue balloons. How many balloons are there in all?`,
+(a,b)=>`A shop receives ${a} apples in one delivery and ${b} in another. How many apples arrive altogether?`,
+(a,b)=>`A student reads ${a} pages on Saturday and ${b} pages on Sunday. How many pages are read?`,
+(a,b)=>`A garden has ${a} roses and ${b} sunflowers. How many flowers are there in all?`,
+(a,b)=>`A school collects ${a} rupees from one class and ${b} rupees from another. How much is collected?`,
+(a,b)=>`A toy box contains ${a} cars and ${b} trains. How many toys are in the box?`,
+(a,b)=>`A baker prepares ${a} cookies in the morning and ${b} more later. How many cookies are prepared?`,
+(a,b)=>`A library has ${a} storybooks and buys ${b} new storybooks. How many does it have now?`,
+(a,b)=>`A team scores ${a} points in the first round and ${b} in the second. What is its total score?`,
+(a,b)=>`A fruit seller has ${a} oranges and receives ${b} more. How many oranges are there now?`,
+(a,b)=>`A class has ${a} pencils and the teacher brings ${b} more. How many pencils are there altogether?`
+,
+(a,b)=>`A museum welcomes ${a} visitors in the morning and ${b} in the afternoon. How many visitors come that day?`,
+(a,b)=>`A student earns ${a} points in one game and ${b} points in another. How many points are earned altogether?`,
+(a,b)=>`A farmer gathers ${a} pumpkins from one field and ${b} from another. How many pumpkins are gathered?`,
+(a,b)=>`A charity receives ${a} books from one family and ${b} from another. How many books are donated?`,
+(a,b)=>`A shop sells ${a} notebooks on Monday and ${b} on Tuesday. How many notebooks are sold?`,
+(a,b)=>`A school plants ${a} trees near the gate and ${b} trees in the playground. How many trees are planted?`,
+(a,b)=>`A train has ${a} passengers in one carriage and ${b} in another. How many passengers are in the two carriages?`,
+(a,b)=>`A child saves ${a} rupees in one month and ${b} rupees the next month. How much is saved?`,
+(a,b)=>`A baker decorates ${a} cupcakes with chocolate and ${b} with vanilla icing. How many cupcakes are decorated?`,
+(a,b)=>`A class reads ${a} pages on one day and ${b} pages the next day. How many pages are read?`,
+(a,b)=>`A sports club has ${a} junior members and ${b} senior members. How many members are there?`,
+(a,b)=>`A fruit shop receives ${a} bananas in the morning delivery and ${b} in the evening delivery. How many bananas arrive?`,
+(a,b)=>`A library lends ${a} books on Saturday and ${b} on Sunday. How many books are lent over the weekend?`,
+(a,b)=>`A school collects ${a} plastic bottles from one street and ${b} from another. How many bottles are collected?`,
+(a,b)=>`A florist sells ${a} roses and ${b} lilies. How many flowers does the florist sell?`,
+(a,b)=>`A family travels ${a} kilometres on Saturday and ${b} kilometres on Sunday. How far do they travel altogether?`,
+(a,b)=>`A warehouse ships ${a} parcels in the morning and ${b} in the afternoon. How many parcels are shipped?`,
+(a,b)=>`A classroom has ${a} sheets of blue paper and ${b} sheets of yellow paper. How many sheets are there?`,
+(a,b)=>`A team scores ${a} goals in one match and ${b} goals in the next match. How many goals does it score?`,
+(a,b)=>`A farmer picks ${a} kilograms of beans and ${b} kilograms of peas. How many kilograms of vegetables are picked?`,
+(a,b)=>`A toy store has ${a} puzzles and receives ${b} more. How many puzzles does it have now?`,
+(a,b)=>`A café serves ${a} cups of tea and ${b} cups of coffee. How many drinks are served?`,
+(a,b)=>`A school raises ${a} rupees at a fair and ${b} rupees from donations. How much money is raised?`,
+(a,b)=>`A gardener plants ${a} tulips and ${b} daisies. How many flowers are planted?`,
+(a,b)=>`A bus picks up ${a} passengers at one stop and ${b} at the next. How many passengers board?`,
+(a,b)=>`A student has ${a} stickers in one album and ${b} in another. How many stickers are there?`,
+(a,b)=>`A shop stocks ${a} packets of rice and ${b} packets of lentils. How many packets are stocked?`,
+(a,b)=>`A community group prepares ${a} meal boxes on Friday and ${b} on Saturday. How many meal boxes are prepared?`,
+(a,b)=>`A school library has ${a} fiction books and ${b} non-fiction books. How many books are in these two groups?`,
+(a,b)=>`A baker makes ${a} plain rolls and ${b} cheese rolls. How many rolls are made?`
+];
+const subBaseFrames=[
+(a,b)=>`A shop has ${a} oranges and sells ${b}. How many oranges are left?`,
+(a,b)=>`There are ${a} students in a hall. ${b} students leave. How many students remain?`,
+(a,b)=>`Meena has ${a} rupees and spends ${b} rupees. How much money is left?`,
+(a,b)=>`A farmer collects ${a} eggs and uses ${b} for cooking. How many eggs remain?`,
+(a,b)=>`A library has ${a} books and lends ${b}. How many books are still in the library?`,
+(a,b)=>`A bus has ${a} passengers. At a stop, ${b} passengers get off. How many remain?`,
+(a,b)=>`A basket contains ${a} mangoes. ${b} mangoes are eaten. How many mangoes are left?`,
+(a,b)=>`A school orders ${a} notebooks and gives ${b} to students. How many notebooks remain?`,
+(a,b)=>`A game has ${a} points. Arjun loses ${b} points. How many points does he have now?`,
+(a,b)=>`There are ${a} balloons. The wind carries away ${b}. How many balloons are left?`,
+(a,b)=>`A shop has ${a} pencils and sells ${b}. How many pencils remain?`,
+(a,b)=>`A gardener grows ${a} flowers and gives ${b} away. How many flowers are left?`,
+(a,b)=>`A child has ${a} stickers and gives ${b} to a friend. How many stickers remain?`,
+(a,b)=>`A baker makes ${a} cupcakes and sells ${b}. How many cupcakes are left?`,
+(a,b)=>`A farmer has ${a} apples and uses ${b} to make juice. How many apples remain?`,
+(a,b)=>`A classroom has ${a} chairs and ${b} are moved to another room. How many chairs stay?`,
+(a,b)=>`A library has ${a} books and removes ${b} damaged books. How many remain?`,
+(a,b)=>`A team scores ${a} points and loses ${b} points as a penalty. What is its score now?`,
+(a,b)=>`A shop receives ${a} bottles and sells ${b}. How many bottles are still in stock?`,
+(a,b)=>`A box contains ${a} crayons. ${b} crayons are taken out. How many remain?`
+,
+(a,b)=>`A shop stocks ${a} packets of rice and sells ${b}. How many packets remain?`,
+(a,b)=>`A school has ${a} notebooks and distributes ${b} to students. How many notebooks are left?`,
+(a,b)=>`A farmer picks ${a} guavas and takes ${b} to the market. How many guavas stay on the farm?`,
+(a,b)=>`A cinema has ${a} tickets available and sells ${b}. How many tickets are still available?`,
+(a,b)=>`A child has ${a} rupees and buys a toy for ${b} rupees. How much money remains?`,
+(a,b)=>`A library has ${a} magazines and lends ${b}. How many magazines remain?`,
+(a,b)=>`A baker makes ${a} rolls and puts ${b} on a delivery order. How many rolls are left?`,
+(a,b)=>`A farmer collects ${a} tomatoes and sells ${b} at the market. How many tomatoes remain?`,
+(a,b)=>`A class has ${a} art sheets and uses ${b} for a project. How many sheets are unused?`,
+(a,b)=>`A shop has ${a} greeting cards and sells ${b}. How many cards are left?`,
+(a,b)=>`A gardener has ${a} flower bulbs and plants ${b}. How many bulbs are unplanted?`,
+(a,b)=>`A bus has ${a} seats, and ${b} are occupied. How many seats are empty?`,
+(a,b)=>`A student needs to read ${a} pages and has already read ${b}. How many pages are left to read?`,
+(a,b)=>`A warehouse stores ${a} boxes and ships ${b}. How many boxes remain in storage?`,
+(a,b)=>`A shop has ${a} bottles of juice and sells ${b}. How many bottles remain?`,
+(a,b)=>`A team has ${a} points and receives a penalty of ${b} points. What is its new score?`,
+(a,b)=>`A school orders ${a} chairs and sends ${b} to another classroom. How many chairs stay?`,
+(a,b)=>`A baker prepares ${a} biscuits and packs ${b} for a customer. How many biscuits are not packed yet?`,
+(a,b)=>`A farmer has ${a} bags of grain and delivers ${b} bags. How many bags remain?`,
+(a,b)=>`A shop displays ${a} toys and sells ${b}. How many toys are still on display?`,
+(a,b)=>`A family has ${a} kilometres left on a trip and travels ${b} kilometres. How many kilometres remain?`,
+(a,b)=>`A class collects ${a} cans for recycling and sends ${b} away. How many cans are still waiting?`,
+(a,b)=>`A florist has ${a} roses and uses ${b} to make bouquets. How many roses remain unused?`,
+(a,b)=>`A café prepares ${a} sandwiches and sells ${b}. How many sandwiches are left?`,
+(a,b)=>`A student earns ${a} points and spends ${b} points in a game. How many points remain?`,
+(a,b)=>`A shop receives ${a} eggs and uses ${b} for baking. How many eggs are left?`,
+(a,b)=>`A school has ${a} sports cones and takes ${b} outside for practice. How many cones stay inside?`,
+(a,b)=>`A gardener grows ${a} seedlings and gives ${b} to neighbours. How many seedlings remain?`,
+(a,b)=>`A delivery van carries ${a} parcels and delivers ${b}. How many parcels are still in the van?`,
+(a,b)=>`A box holds ${a} building blocks. A child takes out ${b}. How many blocks remain in the box?`
+];
+const numberNouns={
+ mul:['stickers','seedlings','books','muffins','toys','flowers','pencils','crayons','cups','plates','apples','bottles','cards','biscuits','marbles','notebooks','candles','eggs','oranges','mangoes','shells','beads','buttons','tiles','balloons','candies','leaves','sweets','balls','flags'],
+ div:['pencils','apples','biscuits','books','flowers','oranges','cookies','crayons','bottles','seedlings','cards','mangoes','marbles','notebooks','eggs','candies','beads','shells','stickers','toy cars','candles','leaves','sweets','balls','flags','buttons','tiles','balloons','ribbons','erasers'],
+ add:['storybooks','marbles','mangoes','pencils','cans','buns','balloons','stickers','crayons','flowers','apples','notebooks','eggs','shells','cards','toys','bottles','leaves','candies','flags','cups','beads','buttons','tiles','biscuits','oranges','muffins','candles','sweets','balls'],
+ sub:['oranges','eggs','books','mangoes','notebooks','balloons','stickers','crayons','flowers','apples','bottles','cards','toys','candies','marbles','shells','cups','tickets','plants','candles','beads','leaves','sweets','pencils','biscuits','muffins','buttons','tiles','balls','flags']
+};
+// Keep a shuffled bag of story frames for each operation. A frame is not reused
+// until the other frames for that operation have been shown once.
+const stories={add:addBaseFrames,sub:subBaseFrames,mul:mulBaseFrames,div:divBaseFrames};
+const templateBags={add:[],sub:[],mul:[],div:[]};
+const lastTemplateIndex={add:-1,sub:-1,mul:-1,div:-1};
+function pickTemplate(op){
+ let bag=templateBags[op];
+ if(bag.length===0){
+   bag=stories[op].map((_,i)=>i);
+   for(let i=bag.length-1;i>0;i--){
+     const j=Math.floor(Math.random()*(i+1));
+     [bag[i],bag[j]]=[bag[j],bag[i]];
+   }
+   // Avoid repeating the last frame at the boundary between cycles.
+   if(bag.length>1 && bag[bag.length-1]===lastTemplateIndex[op]){
+     [bag[0],bag[bag.length-1]]=[bag[bag.length-1],bag[0]];
+   }
+   templateBags[op]=bag;
+ }
+ const index=templateBags[op].pop();
+ lastTemplateIndex[op]=index;
+ return stories[op][index];
+}
+const state={number:0,attempted:0,correct:0,current:null,answered:false};
+const rand=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+
+
+function generate(type){
+ let op=type;
+ if(type==='addsub')op=Math.random()<.5?'add':'sub';
+ if(type==='divmul')op=Math.random()<.5?'div':'mul';
+ if(type==='mixed')op=['add','sub','mul','div'][rand(0,3)];
+ let a,b,answer,text,explanation;
+ if(op==='add'){a=rand(8,250);b=rand(2,180);answer=a+b;text=pickTemplate('add')(a,b);explanation=`Add the two amounts: ${a} + ${b} = ${answer}. The total is ${answer}.`;}
+ if(op==='sub'){a=rand(20,400);b=rand(2,a);answer=a-b;text=pickTemplate('sub')(a,b);explanation=`Take away the amount used or removed: ${a} − ${b} = ${answer}. ${answer} remain.`;}
+ if(op==='mul'){a=rand(2,30);b=rand(2,20);answer=a*b;text=pickTemplate('mul')(a,b);explanation=`There are ${a} equal groups with ${b} in each group. Multiply: ${a} × ${b} = ${answer}.`;}
+ if(op==='div'){b=rand(2,20);const q=rand(2,30);a=b*q;answer=q;text=pickTemplate('div')(a,b);explanation=`Share ${a} equally into groups of ${b}: ${a} ÷ ${b} = ${q}. Check: ${q} × ${b} = ${a}.`;}
+ return {op,a,b,answer,text,explanation};
+}
+function nextProblem(){
+ state.current=generate($('bankType').value);state.number++;state.answered=false;
+ $('problemNumber').textContent=`Question ${state.number}`;
+ $('problemText').textContent=state.current.text;$('answerInput').value='';$('answerFeedback').textContent='';$('answerFeedback').className='feedback';
+ $('answerExplanation').textContent='';$('answerExplanation').classList.add('hidden');
+ $('bankProgress').style.width=((state.number%20)/20*100)+'%';$('answerInput').focus();
+}
+$('nextProblem').addEventListener('click',nextProblem);
+$('resetBank').addEventListener('click',()=>{state.number=0;state.attempted=0;state.correct=0;$('attempted').textContent='0';$('correct').textContent='0';nextProblem();});
+$('bankType').addEventListener('change',()=>{state.number=0;nextProblem();});
+$('checkAnswer').addEventListener('click',()=>{
+ if(!state.current)nextProblem();
+ const val=$('answerInput').value;
+ if(val.trim()===''){$('answerFeedback').textContent='Please enter an answer first.';$('answerFeedback').className='feedback bad';return;}
+ const ok=Number(val)===state.current.answer;
+ if(!state.answered){state.attempted++;if(ok)state.correct++;$('attempted').textContent=state.attempted;$('correct').textContent=state.correct;state.answered=true;}
+ $('answerFeedback').textContent=ok?'Correct! Well done.':'Not quite. You can try again or show the explanation.';
+ $('answerFeedback').className='feedback '+(ok?'good':'bad');
+});
+$('explainAnswer').addEventListener('click',()=>{if(!state.current)nextProblem();$('answerExplanation').textContent='Explanation: '+state.current.explanation;$('answerExplanation').classList.remove('hidden');});
+
+// Quiz uses the same unlimited word-problem generator.
+let quiz={list:[],index:0,score:0,answered:false};
+function renderQuiz(){const q=quiz.list[quiz.index];quiz.answered=false;$('quizCount').textContent=`Question ${quiz.index+1} of ${quiz.list.length}`;$('quizScore').textContent=quiz.score;$('quizProgress').style.width=(quiz.index/quiz.list.length*100)+'%';$('quizText').textContent=q.text;$('quizAnswer').value='';$('quizFeedback').textContent='';$('quizExplain').classList.add('hidden');$('quizNext').classList.add('hidden');$('quizCheck').classList.remove('hidden');$('quizAnswer').disabled=false;}
+$('startQuiz').addEventListener('click',()=>{const n=Number($('quizType').value);quiz={list:Array.from({length:n},()=>generate('mixed')),index:0,score:0,answered:false};$('quizArea').classList.remove('hidden');$('quizResult').textContent='';renderQuiz();});
+$('quizCheck').addEventListener('click',()=>{if(quiz.answered)return;const q=quiz.list[quiz.index],val=$('quizAnswer').value;if(val.trim()===''){$('quizFeedback').textContent='Enter your answer first.';return;}const ok=Number(val)===q.answer;if(ok)quiz.score++;quiz.answered=true;$('quizScore').textContent=quiz.score;$('quizFeedback').textContent=ok?'Correct!':'Incorrect.';$('quizFeedback').className='feedback '+(ok?'good':'bad');$('quizExplain').textContent='Explanation: '+q.explanation;$('quizExplain').classList.remove('hidden');$('quizCheck').classList.add('hidden');$('quizNext').classList.remove('hidden');$('quizAnswer').disabled=true;});
+$('quizNext').addEventListener('click',()=>{if(quiz.index<quiz.list.length-1){quiz.index++;renderQuiz();}else{$('quizArea').classList.add('hidden');$('quizResult').innerHTML=`<h3>Quiz complete</h3><p class="math">Score: ${quiz.score} / ${quiz.list.length}</p><button id="retry" class="btn-purple">Try again</button>`;$('retry').addEventListener('click',()=>$('startQuiz').click());}});
+nextProblem();
+})();
+</script>
+</body>
+</html>
