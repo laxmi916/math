@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Word Problems — Learn and Practise</title>
+<style>
+:root{
+ --ink:#192744;--muted:#65728a;--primary:#4169e1;--primary-dark:#294fc0;
+ --purple:#7652c8;--teal:#0b9297;--bg:#eef2fb;--surface:#fff;
+ --line:#dce4f2;--soft:#f5f7ff;--good:#167647;--bad:#c03936;
+ --shadow:0 14px 40px rgba(35,55,100,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eaf0ff 0,#f6f8fd 300px,#f6f8fd 100%);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
+header{position:relative;overflow:hidden;padding:30px 18px 34px;text-align:center;color:white;background:linear-gradient(125deg,#315bd5 0%,#6748c5 58%,#8050c8 100%)}
+header:before,header:after{content:"";position:absolute;border-radius:50%;background:#ffffff12;pointer-events:none}
+header:before{width:240px;height:240px;top:-150px;left:8%}header:after{width:310px;height:310px;right:4%;bottom:-250px}
+header h1{position:relative;margin:0;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:850;letter-spacing:-.6px}
+header p{position:relative;margin:7px auto 0;max-width:680px;color:#eef1ff;font-size:1rem}
+main{width:min(920px,100%);margin:24px auto;padding:0 18px 44px}
+.tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 20px}
+.tab,button{border:0;border-radius:12px;padding:11px 17px;font:inherit;font-weight:750;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+button:hover,.tab:hover{transform:translateY(-1px)}
+button:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ffbf47;outline-offset:3px}
+.tab{background:#e4eafa;color:#354361;box-shadow:0 2px 5px #20386b08}
+.tab.active{background:var(--primary);color:white;box-shadow:0 6px 15px #4169e13b}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--surface);border:1px solid #e1e7f2;border-radius:22px;padding:clamp(19px,3.5vw,32px);margin-bottom:18px;box-shadow:var(--shadow)}
+h2{margin:0 0 10px;font-size:clamp(1.35rem,3vw,1.65rem);line-height:1.3;letter-spacing:-.3px}
+h3{margin:15px 0 6px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+.concept{background:#f3f6ff;border:1px solid #e1e8ff;border-radius:15px;padding:17px}
+.concept.green{background:#effafa;border-color:#d0eeee}
+.example{margin:12px 0;padding:12px 15px;border-left:5px solid #e8a317;background:#fff8e7;border-radius:8px}
+.math{font-size:1.22rem;font-weight:800}
+.steps li{margin:5px 0}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row label{font-weight:750}
+.row select,.row input,.answer{padding:12px 14px;border:1px solid #cbd5e7;border-radius:12px;font:inherit;background:#fff;color:var(--ink)}
+.row select{min-height:46px}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 4px 10px #4169e125}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-teal{background:var(--teal);color:white;box-shadow:0 4px 10px #0b92971f}
+.btn-purple{background:var(--purple);color:white}
+.btn-light{background:#edf1fa;color:#2b3a58}
+.problem-stage{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;min-height:0;padding:24px 0 12px}
+.problem-meta{display:flex;justify-content:flex-start;gap:10px;flex-wrap:wrap;color:#5e6c88;font-size:.9rem;font-weight:750}
+.problem-meta span{display:inline-flex;align-items:center;background:#eef2ff;color:#3c56a5;border-radius:999px;padding:5px 12px}
+.problem-text{font-size:clamp(1.2rem,2.6vw,1.65rem);font-weight:750;line-height:1.5;margin:18px 0 24px;max-width:100%;color:#1e2c49}
+.answer{font-size:1.08rem;width:min(100%,290px);border:2px solid #d4ddef;background:#fbfcff}
+.answer:focus,.row input:focus,.row select:focus{border-color:var(--primary);outline:3px solid #4169e11c}
+.feedback{font-weight:750;min-height:26px;margin-top:12px}
+.good{color:var(--good)}.bad{color:var(--bad)}
+.explanation{margin-top:12px;background:#effaf5;border:1px solid #ccebd9;border-radius:14px;padding:15px 17px;color:#20573b}
+.hidden{display:none!important}
+.progress{height:8px;background:#e4eaf5;border-radius:99px;overflow:hidden;margin:17px 0 6px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4169e1,#17a6a0);border-radius:99px;transition:width .25s}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.stats span{background:#f2f5fb;border:1px solid #e7ecf5;padding:8px 13px;border-radius:11px;color:#53617b}
+.stats b{color:var(--ink)}
+#problemText{max-width:780px}
+#answerInput{min-height:48px}
+@media(min-width:700px){
+ .problem-stage{padding:27px 10px 14px}
+ #problemText{max-width:790px}
+}
+@media(orientation:landscape) and (min-width:650px){
+ main{width:min(960px,100%)}
+ .bank-card{min-height:0}
+ .problem-stage{min-height:0;padding-top:24px}
+}
+@media(max-width:560px){
+ header{padding:24px 15px 27px}
+ main{padding:0 12px 30px;margin:16px auto}
+ .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:14px}
+ .tab{padding:10px 5px;font-size:.92rem}
+ .card{padding:17px;border-radius:18px}
+ .row{gap:8px}
+ .row select{width:100%}
+ .problem-stage{padding-top:19px}
+ .problem-text{margin:15px 0 21px;font-size:1.22rem}
+ .answer{width:100%}
+ .row:has(#answerInput){align-items:stretch;flex-direction:column}
+ .row:has(#answerInput) label{margin-bottom:-5px}
+ #checkAnswer,#explainAnswer,#nextProblem{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<header><h1>Math Word Problems</h1><p>Learn addition, subtraction, multiplication and division. Practise one real-life word problem at a time.</p></header>
+<main>
+<nav class="tabs" aria-label="Sections">
+<button class="tab active" data-panel="learn">Learn</button>
+<button class="tab" data-panel="bank">Practice Problems</button>
+<button class="tab" data-panel="quiz">Quiz</button>
+</nav>
+
+<section id="learn" class="panel active">
+<div class="card">
+<h2>Addition — putting amounts together</h2>
+<p>Use addition when two or more amounts are joined to find the total.</p>
+<div class="concept"><b>Word problem:</b> Anu has 12 crayons. Her friend gives her 8 more crayons. How many crayons does Anu have now?<p class="math">12 + 8 = 20</p><b>Answer:</b> Anu has 20 crayons.</div>
+</div>
+<div class="card">
+<h2>Subtraction — taking away or finding the difference</h2>
+<p>Use subtraction when an amount is taken away or when you need to find how many more or fewer.</p>
+<div class="concept"><b>Word problem:</b> A shop has 35 balloons. It sells 9 balloons. How many balloons are left?<p class="math">35 − 9 = 26</p><b>Answer:</b> There are 26 balloons left.</div>
+</div>
+<div class="card">
+<h2>Multiplication — equal groups</h2>
+<p>Multiplication is a quick way to add equal groups. Find the number of groups and the number in each group.</p>
+<div class="concept"><b>Word problem:</b> There are 4 trays with 6 cupcakes on each tray. How many cupcakes are there altogether?<p class="math">6 + 6 + 6 + 6 = 24</p><p class="math">4 × 6 = 24</p><b>Answer:</b> There are 24 cupcakes.</div>
+<div class="example"><b>Tip:</b> Phrases such as “each”, “every”, and “equal groups” may suggest multiplication. Read the whole story before choosing.</div>
+</div>
+<div class="card">
+<h2>Division — sharing equally or making groups</h2>
+<p>Division finds how much each group receives or how many equal groups can be made.</p>
+<div class="grid">
+<div class="concept green"><b>Sharing equally</b><p>18 biscuits are shared equally among 3 children. How many does each child get?</p><p class="math">18 ÷ 3 = 6</p><b>Answer:</b> 6 biscuits each.</div>
+<div class="concept green"><b>Making groups</b><p>There are 24 pencils. Each box holds 6 pencils. How many boxes are needed?</p><p class="math">24 ÷ 6 = 4</p><b>Answer:</b> 4 boxes.</div>
+</div>
+<div class="example"><b>Connection:</b> Multiplication and division undo each other. Since 4 × 6 = 24, then 24 ÷ 6 = 4 and 24 ÷ 4 = 6.</div>
+</div>
+<div class="card"><h2>How to solve any word problem</h2><ol class="steps"><li>Read the story carefully.</li><li>Identify what you know and what you need to find.</li><li>Choose addition, subtraction, multiplication or division.</li><li>Write the number sentence and calculate.</li><li>Check that your answer makes sense and include the unit.</li></ol><button class="btn-primary" onclick="document.querySelector('[data-panel=bank]').click()">Start practising</button></div>
+</section>
+
+<section id="bank" class="panel">
+<div class="card bank-card">
+<h2>Practice Problems</h2>
+<p class="muted">Practise with fresh word problems. Choose the operations, solve each question, and reveal a step-by-step explanation whenever you need help.</p>
+<div class="row">
+<label for="bankType">Problem type</label>
+<select id="bankType"><option value="addsub">Addition / Subtraction</option><option value="divmul">Division / Multiplication</option><option value="mixed">Mixed (all four operations)</option></select>
+<button id="resetBank" class="btn-light">Start new set</button>
+</div>
+<div class="progress"><span id="bankProgress"></span></div>
+<div class="problem-stage">
+<div class="problem-meta"><span id="problemNumber">Question 1</span></div>
+<div id="problemText" class="problem-text">Preparing your first problem…</div>
+<div class="row"><label for="answerInput">Your answer</label><input class="answer" id="answerInput" type="number" inputmode="numeric" placeholder="Enter answer"></div>
+<div class="row" style="margin-top:14px">
+<button id="checkAnswer" class="btn-primary">Check answer</button>
+<button id="explainAnswer" class="btn-light">Show explanation</button>
+<button id="nextProblem" class="btn-teal">Next problem →</button>
+</div>
+<div id="answerFeedback" class="feedback" role="status" aria-live="polite"></div>
+<div id="answerExplanation" class="explanation hidden"></div>
+</div>
+<div class="stats"><span>Problems attempted: <b id="attempted">0</b></span><span>Correct: <b id="correct">0</b></span></div>
+</div>
+</section>
+
+<section id="quiz" class="panel">
+<div class="card"><h2>Quick quiz</h2><p>Take a short quiz using the same word-problem generator.</p>
+<div class="row"><label for="quizType">Questions</label><select id="quizType"><option value="10">10</option><option value="20">20</option><option value="25">25</option></select><button id="startQuiz" class="btn-purple">Start quiz</button></div>
+<div id="quizArea" class="hidden"><div class="stats"><span id="quizCount">Question 1</span><span>Score: <b id="quizScore">0</b></span></div><div class="progress"><span id="quizProgress"></span></div><div id="quizText" class="problem-text"></div><div class="row"><label for="quizAnswer">Your answer</label><input id="quizAnswer" class="answer" type="number" inputmode="numeric"></div><div class="row" style="margin-top:12px"><button id="quizCheck" class="btn-primary">Check</button><button id="quizNext" class="btn-teal hidden">Next →</button></div><div id="quizFeedback" class="feedback"></div><div id="quizExplain" class="explanation hidden"></div></div><div id="quizResult"></div>
+</div></section>
+</main>
+<script>
+(() => {
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.panel));}));
+
+// Each operation has 100 story patterns: 10 story structures x 10 everyday contexts.
+const contexts=[
+['stickers','packets','There are {a} {b} in each of {x} {y}. How many {a} are there altogether?'],
+];
+const mulBaseFrames=[
+(a,b,n,place)=>`A ${place} arranges ${a} groups of ${b} ${n}. How many ${n} are there altogether?`,
+(a,b,n,place)=>`Each of ${a} ${place} receives ${b} ${n}. How many ${n} are needed in total?`,
+(a,b,n,place)=>`There are ${a} ${place}, and every one contains ${b} ${n}. How many ${n} are there?`,
+(a,b,n,place)=>`A ${place} prepares ${a} packs with ${b} ${n} in every pack. How many ${n} are packed?`,
+(a,b,n,place)=>`For an event, organisers set out ${a} tables with ${b} ${n} on each table. How many ${n} are set out?`,
+(a,b,n,place)=>`A worker makes ${a} batches of ${n}, putting ${b} items in each batch. How many items are made?`,
+(a,b,n,place)=>`A shop receives ${a} cartons containing ${b} ${n} each. How many ${n} arrive?`,
+(a,b,n,place)=>`A coach forms ${a} teams with ${b} members on each team. How many people are on the teams?`,
+(a,b,n,place)=>`A gardener plants ${a} rows, placing ${b} plants in each row. How many plants are planted?`,
+(a,b,n,place)=>`A family uses ${b} ${n} every day for ${a} days. How many ${n} do they use?`
+];
+const divBaseFrames=[
+(t,g,n,place)=>`A ${place} shares ${t} ${n} equally among ${g} people. How many ${n} does each person receive?`,
+(t,g,n,place)=>`A ${place} packs ${t} ${n} into bags holding ${g} each. How many bags are filled?`,
+(t,g,n,place)=>`${t} ${n} are arranged into groups of ${g}. How many groups are made?`,
+(t,g,n,place)=>`A ${place} places ${t} ${n} equally on ${g} shelves. How many ${n} go on each shelf?`,
+(t,g,n,place)=>`A ${place} has ${t} ${n} to distribute equally to ${g} teams. How many does each team get?`,
+(t,g,n,place)=>`A length of ribbon is ${t} centimetres. It is cut into pieces of ${g} centimetres. How many pieces are cut?`,
+(t,g,n,place)=>`A ${place} puts ${g} ${n} into each box. If there are ${t} ${n}, how many boxes can be filled?`,
+(t,g,n,place)=>`${t} ${n} are shared equally among ${g} tables. How many are placed on each table?`,
+(t,g,n,place)=>`A ${place} bundles ${t} ${n}, with ${g} in each bundle. How many bundles are there?`,
+(t,g,n,place)=>`${t} ${n} must be carried in groups of ${g}. How many groups are needed?`
+];
+const addBaseFrames=[
+(a,b,n,place)=>`A ${place} collects ${a} ${n} in the morning and ${b} more in the afternoon. How many are collected altogether?`,
+(a,b,n,place)=>`There are ${a} ${n} at one ${place} and ${b} at another. How many are there in total?`,
+(a,b,n,place)=>`A ${place} starts with ${a} ${n} and receives another ${b}. How many does it have now?`,
+(a,b,n,place)=>`During a drive, volunteers collect ${a} ${n} on Saturday and ${b} on Sunday. What is the total?`,
+(a,b,n,place)=>`A ${place} sells ${a} ${n} before lunch and ${b} after lunch. How many are sold altogether?`,
+(a,b,n,place)=>`One group makes ${a} ${n}; another group makes ${b}. How many do they make together?`,
+(a,b,n,place)=>`A family travels ${a} kilometres on one day and ${b} kilometres the next day. How far do they travel in all?`,
+(a,b,n,place)=>`A student earns ${a} points in round one and ${b} points in round two. What is the total score?`,
+(a,b,n,place)=>`A ${place} has ${a} ${n}, then someone adds ${b} more. How many are there now?`,
+(a,b,n,place)=>`Two boxes contain ${a} ${n} and ${b} ${n}. How many ${n} are there in both boxes?`
+];
+const subBaseFrames=[
+(a,b,n,place)=>`A ${place} has ${a} ${n} and gives away ${b}. How many are left?`,
+(a,b,n,place)=>`There are ${a} ${n} at a ${place}. If ${b} are used, how many remain?`,
+(a,b,n,place)=>`A ${place} starts with ${a} ${n} and sells ${b}. How many are still there?`,
+(a,b,n,place)=>`A group has ${a} ${n}. ${b} are taken to another room. How many stay behind?`,
+(a,b,n,place)=>`A student saves ${a} rupees and spends ${b} rupees. How much money remains?`,
+(a,b,n,place)=>`A bus has ${a} passengers. At a stop, ${b} passengers get off. How many remain on the bus?`,
+(a,b,n,place)=>`A ${place} receives ${a} ${n} and gives ${b} to customers. How many are left?`,
+(a,b,n,place)=>`There were ${a} ${n} in a box. ${b} were taken out. How many are still in the box?`,
+(a,b,n,place)=>`A team scores ${a} points but loses ${b} points as a penalty. What is its score now?`,
+(a,b,n,place)=>`A farmer picks ${a} ${n} and finds that ${b} are damaged. How many good ones remain?`
+];
+const numberNouns={
+ mul:['stickers','seedlings','books','muffins','passengers','rupees','players','toys','flowers','pencils','crayons','cups','plates','apples','bottles','cards','biscuits','marbles','notebooks','candles','eggs','oranges','mangoes','shells','beads','buttons','tiles','chairs','flags','balloons'],
+ div:['pencils','apples','children','biscuits','books','flowers','students','oranges','cookies','crayons','bottles','seedlings','cards','mangoes','marbles','notebooks','eggs','cups','plates','candies','beads','shells','ribbons','stickers','toy cars','candles','leaves','sweets','balls','water bottles'],
+ add:['storybooks','marbles','mangoes','children','pencils','metres','passengers','cans','buns','balloons','stickers','crayons','flowers','apples','notebooks','eggs','shells','cards','toys','bottles','points','rupees','leaves','chairs','beads','cups','tickets','plants','candies','flags'],
+ sub:['oranges','students','rupees','eggs','books','passengers','mangoes','notebooks','points','balloons','stickers','crayons','flowers','apples','bottles','cards','toys','candies','marbles','shells','cups','chairs','tickets','plants','candles','beads','leaves','sweets','pencils','biscuits']
+};
+const places=['shop','school','farm','bakery','library','garden','club','factory','classroom','community centre','market','sports team','camp','museum','canteen','bookstore','orchard','animal shelter','craft room','sports day'];
+function buildTemplates(kind,frames){
+ const list=[];
+ for(let i=0;i<100;i++){
+   const frame=frames[Math.floor(i/10)], noun=numberNouns[kind][(i*7+Math.floor(i/10))%numberNouns[kind].length], place=places[(i*3+Math.floor(i/10))%places.length];
+   list.push((a,b)=>frame(a,b,noun,place));
+ }
+ return list;
+}
+const mulTemplates=buildTemplates('mul',mulBaseFrames);
+const divTemplates=buildTemplates('div',divBaseFrames);
+const addTemplates=buildTemplates('add',addBaseFrames);
+const subTemplates=buildTemplates('sub',subBaseFrames);
+const stories={add:addTemplates,sub:subTemplates,mul:mulTemplates,div:divTemplates};
+const state={number:0,attempted:0,correct:0,current:null,answered:false};
+const rand=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+function generate(type){
+ let op=type;
+ if(type==='addsub')op=Math.random()<.5?'add':'sub';
+ if(type==='divmul')op=Math.random()<.5?'div':'mul';
+ if(type==='mixed')op=['add','sub','mul','div'][rand(0,3)];
+ let a,b,answer,text,explanation;
+ if(op==='add'){a=rand(8,250);b=rand(2,180);answer=a+b;text=stories.add[rand(0,stories.add.length-1)](a,b);explanation=`Add the two amounts: ${a} + ${b} = ${answer}. The total is ${answer}.`;}
+ if(op==='sub'){a=rand(20,400);b=rand(2,a);answer=a-b;text=stories.sub[rand(0,stories.sub.length-1)](a,b);explanation=`Take away the amount used or removed: ${a} − ${b} = ${answer}. ${answer} remain.`;}
+ if(op==='mul'){a=rand(2,30);b=rand(2,20);answer=a*b;text=stories.mul[rand(0,stories.mul.length-1)](a,b);explanation=`There are ${a} equal groups with ${b} in each group. Multiply: ${a} × ${b} = ${answer}.`;}
+ if(op==='div'){b=rand(2,20);const q=rand(2,30);a=b*q;answer=q;text=stories.div[rand(0,stories.div.length-1)](a,b);explanation=`Share ${a} equally into groups of ${b}: ${a} ÷ ${b} = ${q}. Check: ${q} × ${b} = ${a}.`;}
+ return {op,a,b,answer,text,explanation};
+}
+function nextProblem(){
+ state.current=generate($('bankType').value);state.number++;state.answered=false;
+ $('problemNumber').textContent=`Question ${state.number}`;
+ $('problemText').textContent=state.current.text;$('answerInput').value='';$('answerFeedback').textContent='';$('answerFeedback').className='feedback';
+ $('answerExplanation').textContent='';$('answerExplanation').classList.add('hidden');
+ $('bankProgress').style.width=((state.number%20)/20*100)+'%';$('answerInput').focus();
+}
+$('nextProblem').addEventListener('click',nextProblem);
+$('resetBank').addEventListener('click',()=>{state.number=0;state.attempted=0;state.correct=0;$('attempted').textContent='0';$('correct').textContent='0';nextProblem();});
+$('bankType').addEventListener('change',()=>{state.number=0;nextProblem();});
+$('checkAnswer').addEventListener('click',()=>{
+ if(!state.current)nextProblem();
+ const val=$('answerInput').value;
+ if(val.trim()===''){$('answerFeedback').textContent='Please enter an answer first.';$('answerFeedback').className='feedback bad';return;}
+ const ok=Number(val)===state.current.answer;
+ if(!state.answered){state.attempted++;if(ok)state.correct++;$('attempted').textContent=state.attempted;$('correct').textContent=state.correct;state.answered=true;}
+ $('answerFeedback').textContent=ok?'Correct! Well done.':'Not quite. You can try again or show the explanation.';
+ $('answerFeedback').className='feedback '+(ok?'good':'bad');
+});
+$('explainAnswer').addEventListener('click',()=>{if(!state.current)nextProblem();$('answerExplanation').textContent='Explanation: '+state.current.explanation;$('answerExplanation').classList.remove('hidden');});
+
+// Quiz uses the same unlimited word-problem generator.
+let quiz={list:[],index:0,score:0,answered:false};
+function renderQuiz(){const q=quiz.list[quiz.index];quiz.answered=false;$('quizCount').textContent=`Question ${quiz.index+1} of ${quiz.list.length}`;$('quizScore').textContent=quiz.score;$('quizProgress').style.width=(quiz.index/quiz.list.length*100)+'%';$('quizText').textContent=q.text;$('quizAnswer').value='';$('quizFeedback').textContent='';$('quizExplain').classList.add('hidden');$('quizNext').classList.add('hidden');$('quizCheck').classList.remove('hidden');$('quizAnswer').disabled=false;}
+$('startQuiz').addEventListener('click',()=>{const n=Number($('quizType').value);quiz={list:Array.from({length:n},()=>generate('mixed')),index:0,score:0,answered:false};$('quizArea').classList.remove('hidden');$('quizResult').textContent='';renderQuiz();});
+$('quizCheck').addEventListener('click',()=>{if(quiz.answered)return;const q=quiz.list[quiz.index],val=$('quizAnswer').value;if(val.trim()===''){$('quizFeedback').textContent='Enter your answer first.';return;}const ok=Number(val)===q.answer;if(ok)quiz.score++;quiz.answered=true;$('quizScore').textContent=quiz.score;$('quizFeedback').textContent=ok?'Correct!':'Incorrect.';$('quizFeedback').className='feedback '+(ok?'good':'bad');$('quizExplain').textContent='Explanation: '+q.explanation;$('quizExplain').classList.remove('hidden');$('quizCheck').classList.add('hidden');$('quizNext').classList.remove('hidden');$('quizAnswer').disabled=true;});
+$('quizNext').addEventListener('click',()=>{if(quiz.index<quiz.list.length-1){quiz.index++;renderQuiz();}else{$('quizArea').classList.add('hidden');$('quizResult').innerHTML=`<h3>Quiz complete</h3><p class="math">Score: ${quiz.score} / ${quiz.list.length}</p><button id="retry" class="btn-purple">Try again</button>`;$('retry').addEventListener('click',()=>$('startQuiz').click());}});
+nextProblem();
+})();
+</script>
+</body>
+</html>
